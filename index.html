@@ -2,28 +2,38 @@
 <html>
   <head>
     <title>Folder selection</title>
+    <link href='./libs/template.css' media='all' rel='stylesheet' type='text/css' />
   </head>
   <body>
-    <div>
-      <input type='file' id='dir' webkitdirectory directory multiple />
+    <div class='app'>
+
+      <div class='form-row'>
+        <input type='file' id='dir' webkitdirectory directory multiple />
+      </div>
+      <div class='form-row'>
+        <input type='text' class='text' id='selected' disabled />
+      </div>
+      <div class='form-row'>
+        <textarea id='log' disabled></textarea>
+      </div>
+
     </div>
-    <div>
-      <input type='text' id='selected' disabled />
-    </div>
-    <div>
-      <textarea id='log' disabled></textarea>
-    </div>
+
 
     <script>
     window.onload = function () {
       var ipc = require('ipc');
-      var selected = document.querySelector('#selected');
+      var watcher = require('./libs/watcher');
 
       var dir = document.querySelector('#dir');
+      var selected = document.querySelector('#selected');
+      var log = document.querySelector('#log');
 
       dir.addEventListener('change', function (e) {
         selected.value = e.target.files[0].path;
-        ipc.send('listento', e.target.files[0].path)
+        watcher(e.target.files[0].path, function (e, filename) {
+          log.value += 'Event: ' + e + '\nFilename: ' + filename + '\n';
+        });
       });
     };
     </script>

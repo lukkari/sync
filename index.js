@@ -4,7 +4,6 @@
 
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
-var ipc = require('ipc');
 var config = require('./config');
 var watcher = require('./libs/watcher');
 
@@ -31,10 +30,6 @@ app.on('ready', function() {
 
   // and load the index.html of the app.
   win.loadUrl(config.baseFile);
-
-  ipc.on('listento', function (e, dir) {
-    watcher(dir);
-  });
 
   // Emitted when the window is closed.
   win.on('closed', function() {
