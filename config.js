@@ -3,6 +3,7 @@
  */
 
 module.exports = {
+
   // BrowserWindow options
   browserWindow : {
     width : (process.env.DEBUG == 'true') ? 1000 : 400, // Provide space for debugger tools
@@ -13,6 +14,8 @@ module.exports = {
 
   // App load file
   baseFile : 'file://' + __dirname + '/index.html',
+
+  trayIcon : __dirname + '/libs/images/tray.png',
 
   crashReporter : {}
   /*
