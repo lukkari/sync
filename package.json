@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "main.js",
   "scripts" : {
-    "start" : "DEBUG=true ../binaries/atom ./"
+    "start" : "DEBUG=true ../binaries/atom ./",
+    "prod" : "../binaries/atom ./"
   }
 }

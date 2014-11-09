@@ -5,8 +5,8 @@
 module.exports = {
   // BrowserWindow options
   browserWindow : {
-    width : 1000,
-    height : 800,
+    width : (process.env.DEBUG == 'true') ? 1000 : 400, // Provide space for debugger tools
+    height : 600,
     title : 'Hello world',
     center : true
   },
