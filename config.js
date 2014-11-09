@@ -12,5 +12,14 @@ module.exports = {
   },
 
   // App load file
-  baseFile : 'file://' + __dirname + '/index.html'
+  baseFile : 'file://' + __dirname + '/index.html',
+
+  crashReporter : {}
+  /*
+  crashReporter : {
+    productName: 'YourName',
+    companyName: 'YourCompany',
+    submitUrl: 'https://your-domain.com/url-to-submit',
+    autoSubmit: true
+  }*/
 };
