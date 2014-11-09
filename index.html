@@ -31,7 +31,7 @@
 
       dir.addEventListener('change', function (e) {
         selected.value = e.target.files[0].path;
-        watcher(e.target.files[0].path, function (e, filename) {
+        watcher.watch(e.target.files[0].path, function (e, filename) {
           log.value += 'Event: ' + e + '\nFilename: ' + filename + '\n';
         });
       });
