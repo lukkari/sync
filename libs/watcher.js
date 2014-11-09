@@ -1,10 +1,18 @@
 var fs = require('fs');
 var path = require('path');
 
-var watcher = function (dir, output) {
-  fs.watch(path.join(dir), output);
+var Watcher = function () {
+  this.conn = null;
+};
 
+Watcher.prototype.watch = function (dir, output) {
+  this.conn = fs.watch(dir, output);
   console.log('Start watching ' + dir);
 };
 
-module.exports = watcher;
+Watcher.prototype.unwatch = function () {
+  if(!this.conn) return false;
+  this.conn.close();
+};
+
+module.exports = new Watcher();

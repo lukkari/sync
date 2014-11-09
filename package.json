@@ -2,8 +2,11 @@
   "name": "Parser",
   "version": "0.0.1",
   "main": "main.js",
-  "scripts" : {
-    "start" : "DEBUG=true ../binaries/atom ./",
-    "prod" : "../binaries/atom ./"
+  "scripts": {
+    "start": "DEBUG=true ../binaries/atom ./",
+    "prod": "../binaries/atom ./"
+  },
+  "devDependencies": {
+    "mocha": "^2.0.1"
   }
 }
