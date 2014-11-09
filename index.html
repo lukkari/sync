@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Folder selection</title>
+  </head>
+  <body>
+    <div>
+      <input type='file' id='dir' webkitdirectory directory multiple />
+    </div>
+    <div>
+      <input type='text' id='selected' disabled />
+    </div>
+    <div>
+      <textarea id='log' disabled></textarea>
+    </div>
+
+    <script>
+    window.onload = function () {
+      var ipc = require('ipc');
+      var selected = document.querySelector('#selected');
+
+      var dir = document.querySelector('#dir');
+
+      dir.addEventListener('change', function (e) {
+        selected.value = e.target.files[0].path;
+        ipc.send('listento', e.target.files[0].path)
+      });
+    };
+    </script>
+  </body>
+</html>
