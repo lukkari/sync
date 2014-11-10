@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "mocha": "^2.0.1"
+  },
+  "dependencies": {
+    "csv-parse": "0.0.6"
   }
 }
