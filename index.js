@@ -7,6 +7,7 @@ var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var Tray = require('tray');
 var Menu = require('menu');
+var ipc = require('ipc');
 
 // Report crashes to our server.
 require('crash-reporter').start(config.crashReporter);
@@ -43,9 +44,17 @@ app.on('ready', function () {
     win = null;
   });
 
+  ipc.on('watchdir', function (e, dir) {
+    console.log(dir);
+  });
+
   // Init tray icon
   appIcon = new Tray(config.trayIcon);
   var contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Open',
+      type: 'normal'
+    },
     {
       label: 'Status',
       submenu: [
