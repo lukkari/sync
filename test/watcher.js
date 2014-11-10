@@ -15,7 +15,7 @@ describe('Watcher', function () {
 
   it('should trigger file change', function (done) {
     watcher.watch(dir, function (e, filename) {
-      if(filename == 'one') {
+      if(filename == 'one' && e == 'change') {
         done();
         watcher.unwatch();
       }
