@@ -1,3 +1,6 @@
+/**
+ * Test watcher lib
+ */
 var watcher = require('../libs/watcher');
 var fs = require('fs');
 var path = require('path');
