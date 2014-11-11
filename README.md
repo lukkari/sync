@@ -9,3 +9,4 @@
 - [ ] Run csv-parse for changed files
 - [ ] Store parsed data in log
 - [ ] Show log in browserWindow
+- [ ] Show saved watch dir in browserWindow

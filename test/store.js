@@ -13,11 +13,8 @@ describe('store lib', function () {
 
   store = store.init(dir);
 
-  it('should create directory on init', function () {
+  it('should create directory and app state file on init', function () {
     assert.equal(true, fs.existsSync(dir));
-  });
-
-  it('should create initial app state file', function () {
     assert.equal(true, fs.existsSync(stateFile));
   });
 
@@ -26,13 +23,12 @@ describe('store lib', function () {
     assert.equal(0, state.length);
   });
 
-  it('test setState function', function () {
+  it('test setState function and file content', function () {
+    var data;
     store.setState([2]);
-    assert.equal(2, store.getState()[0]);
-  });
+    data = JSON.parse(fs.readFileSync(stateFile));
 
-  it('test setState file contents', function () {
-    var data = JSON.parse(fs.readFileSync(stateFile));
+    assert.equal(2, store.getState()[0]);
     assert.equal(2, data[0]);
   });
 
