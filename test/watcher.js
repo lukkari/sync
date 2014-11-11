@@ -7,30 +7,72 @@ var path = require('path');
 
 var assert = require('assert');
 
-describe('Watcher', function () {
-  var dir = path.normalize('tmp');
-  var file = path.join(dir, 'one');
+describe('watcher lib', function () {
+
+  var dirs = ['tmp', 'tmp2'];
+  var filenames = ['one', '.testing'];
 
   before(function () {
-    fs.mkdirSync(dir);
-    fs.writeFileSync(file, '1');
+    dirs.forEach(function (dir) {
+      fs.mkdirSync(dir);
+
+      filenames.forEach(function (filename) {
+        fs.writeFileSync(path.join(dir, filename), '');
+      });
+    });
   });
 
   it('should trigger file change', function (done) {
-    watcher.watch(dir, function (e, filename) {
-      if(filename == 'one' && e == 'change') {
-        done();
-        watcher.unwatch();
+    var dir = dirs[0];
+    var usefile = filenames[0];
+    var usefilepath = path.join(dir, usefile);
+
+    watcher.watch(dirs[0],
+      {
+        types : [],
+        event : 'change',
+        hidden : false
+      },
+      function (err, file, filename) {
+        if(file == usefilepath && 'one' == filename) {
+          done();
+          watcher.unwatch();
+        }
       }
-    });
+    );
 
     setTimeout(function () {
-      fs.appendFileSync(path.join(dir, 'one'), '2')
-    }, 200);
+      fs.appendFileSync(usefilepath, '2')
+    }, 10);
+  });
+
+  it('should ignore hidden files', function (done) {
+    var dir = dirs[1];
+
+    watcher.watch(dir,
+      {
+        types : [],
+        event : 'change',
+        hidden : false
+      },
+      function (err, file, filename) {
+        done();
+      }
+    );
+
+    setTimeout(function () {
+      fs.appendFileSync(path.join(dir, filenames[1]), 'two');
+      fs.appendFileSync(path.join(dir, filenames[0]), 'two')
+    }, 10);
   });
 
   after(function () {
-    fs.unlinkSync(file);
-    fs.rmdirSync(dir);
+    dirs.forEach(function (dir) {
+      filenames.forEach(function (filename) {
+        fs.unlinkSync(path.join(dir, filename));
+      });
+
+      fs.rmdirSync(dir);
+    });
   });
 });
