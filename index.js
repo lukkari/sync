@@ -14,6 +14,9 @@ var ipc = require('ipc');
 // App libs
 var store = require('./libs/store/');
 var watcher = require('./libs/watcher');
+var csv = require('csv-parse');
+var path = require('path');
+var fs = require('fs');
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
@@ -130,7 +133,21 @@ var hideWindow = function () {
 
 
 var startWatching = function (dir) {
+
   watcher.watch(dir, function (e, filename) {
-    console.log('Event: ' + e + '\nFilename: ' + filename);
+    // Ignore files starting with '.'
+    if(e != 'change'
+      || filename.substr(0, 1) == '.'
+      || filename.indexOf('.csv') == -1) return;
+
+    console.log(filename);
+
+    fs.readFile(path.join(dir, filename), function (err, data) {
+      if(err) return console.log(err);
+      csv(data, { delimiter: ',' }, function (err, output) {
+        if(err) return console.log(err);
+        console.log(output);
+      });
+    });
   });
 }
