@@ -13,6 +13,7 @@ var ipc = require('ipc');
 
 // App libs
 var store = require('./libs/store/');
+var watcher = require('./libs/watcher');
 
 // Report crashes to our server.
 require('crash-reporter').start(config.crashReporter);
@@ -32,18 +33,26 @@ app.on('window-all-closed', function () {
   //if(process.platform != 'darwin') app.quit();
 });
 
+app.on('quit', function () {
+  watcher.unwatch();
+});
+
 // This method will be called when atom-shell has done everything
 // initialization and ready for creating browser windows.
 app.on('ready', function () {
-
-  openWindow();
 
   // Init storage
   store = store.init(app.getDataPath(), config.stateObj);
   state = store.getState();
 
+  // If watching dir is not specified, try to set it up
+  if(!store.validDir(state.watchDir)) openWindow();
+  else startWatching(state.watchDir);
+
   ipc.on('watchdir', function (e, dir) {
-    console.log(dir);
+    state.watchDir = dir;
+    store.setState(state);
+    startWatching(dir);
   });
 
   // Init tray icon
@@ -123,3 +132,10 @@ var openWindow = function () {
 var hideWindow = function () {
   if(win) win.hide();
 };
+
+
+var startWatching = function (dir) {
+  watcher.watch(dir, function (e, filename) {
+    console.log('Event: ' + e + '\nFilename: ' + filename);
+  });
+}

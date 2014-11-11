@@ -23,7 +23,6 @@
     <script>
     window.onload = function () {
       var ipc = require('ipc');
-      var watcher = require('./libs/watcher');
 
       var dir = document.querySelector('#dir');
       var selected = document.querySelector('#selected');
@@ -31,10 +30,6 @@
 
       dir.addEventListener('change', function (e) {
         selected.value = e.target.files[0].path;
-        // Watch for file change
-        watcher.watch(e.target.files[0].path, function (e, filename) {
-          log.value += 'Event: ' + e + '\nFilename: ' + filename + '\n';
-        });
         // Update watchdir config
         ipc.send('watchdir', e.target.files[0].path);
       });
