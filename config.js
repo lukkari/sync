@@ -17,7 +17,7 @@ module.exports = {
 
   trayIcon : __dirname + '/libs/images/tray.png',
 
-  crashReporter : {}
+  crashReporter : {},
   /*
   crashReporter : {
     productName: 'YourName',
@@ -25,4 +25,8 @@ module.exports = {
     submitUrl: 'https://your-domain.com/url-to-submit',
     autoSubmit: true
   }*/
+
+  stateObj : {
+    watchDir : null
+  }
 };
