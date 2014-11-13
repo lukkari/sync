@@ -16,6 +16,7 @@ var store = require('./libs/store/');
 var watcher = require('./libs/watcher');
 var csv = require('csv-parse');
 var fs = require('fs');
+var migrate = require('./libs/migrate');
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
@@ -145,7 +146,7 @@ var startWatching = function (dir) {
         if(err) return console.log(err);
         csv(data, { delimiter: ',' }, function (err, output) {
           if(err) return console.log(err);
-          console.log(output);
+          console.log(migrate.fromArray(output));
         });
       });
     }
