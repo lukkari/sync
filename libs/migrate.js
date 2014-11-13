@@ -30,15 +30,15 @@ var migrate = {
 
     for(i = 1; i < data.length; i++) {
       el = data[i];
+      d_start = Date.parse(el[1] + ' ' + el[2]);
+      d_end = Date.parse(el[3] + ' ' + el[4]);
       item = {
         subject: el[0],
         room: el[6],
-        description: el[5]
+        description: el[5],
+        date: (new Date(d_start)).toString(),
+        date_end: (new Date(d_end)).toString()
       };
-      d_start = Date.parse(el[1] + ' ' + el[2]);
-      d_end = Date.parse(el[3] + ' ' + el[4]);
-      item.date = (new Date(d_start)).toString();
-      item.date_end = (new Date(d_end)).toString();
       out.push(item);
     }
 

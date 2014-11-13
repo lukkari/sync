@@ -144,8 +144,10 @@ var startWatching = function (dir) {
 
       fs.readFile(file, function (err, data) {
         if(err) return console.log(err);
+
         csv(data, { delimiter: ',' }, function (err, output) {
           if(err) return console.log(err);
+
           console.log(migrate.fromArray(output));
         });
       });
