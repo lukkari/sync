@@ -1,7 +1,8 @@
 {
-  "name": "Lukkari-parser",
+  "name": "Lukkari-sync",
   "version": "0.0.1",
-  "main": "main.js",
+  "description": "Desktop application that syncs folder with web-version",
+  "main": "index.js",
   "scripts": {
     "start": "DEBUG=true ../binaries/atom ./",
     "prod": "../binaries/atom ./",
