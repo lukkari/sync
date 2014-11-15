@@ -119,6 +119,10 @@ var openWindow = function () {
 
   win.loadUrl(config.baseFile);
 
+  win.webContents.on('did-finish-load', function () {
+    win.webContents.send('state', state);
+  });
+
   win.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time

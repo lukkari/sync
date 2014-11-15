@@ -33,6 +33,11 @@
         // Update watchdir config
         ipc.send('watchdir', e.target.files[0].path);
       });
+
+
+      ipc.on('state', function (state) {
+        selected.value = state.watchDir;
+      });
     };
     </script>
   </body>

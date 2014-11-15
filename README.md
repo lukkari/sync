@@ -11,5 +11,5 @@ Lukkari parse application. Listens for file changes in the selected folder and ~
 - [x] Run csv-parse for changed files
 - [ ] Store parsed data in log
 - [ ] Show log in browserWindow
-- [ ] Show saved watch dir in browserWindow
+- [x] Show saved watch dir in browserWindow
 
