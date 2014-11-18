@@ -12,4 +12,4 @@ Lukkari parse application. Listens for file changes in the selected folder and ~
 - [ ] Store parsed data in log
 - [ ] Show log in browserWindow
 - [x] Show saved watch dir in browserWindow
-
+- [ ] Think of handling abbreviations in schedule files
