@@ -115,7 +115,7 @@ var openWindow = function () {
   win = new BrowserWindow(config.browserWindow);
 
   // Open developer tools (ONLY FOR DEVELOPMENT)
-  if(process.env.DEBUG == 'true') win.openDevTools();
+  if(!!process.env.DEBUG) win.openDevTools();
 
   win.loadUrl(config.baseFile);
 
