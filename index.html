@@ -7,14 +7,32 @@
   <body>
     <div class='app'>
 
-      <div class='form-row'>
-        <input type='file' id='dir' webkitdirectory directory multiple />
-      </div>
-      <div class='form-row'>
-        <input type='text' class='text' id='selected' disabled />
-      </div>
-      <div class='form-row'>
-        <textarea id='log' disabled></textarea>
+      <h1>Settings</h1>
+
+      <div class='settings'>
+
+        <h2>Schedule contains</h2>
+        <section>
+          <div>
+            <input type='radio' name='contains' id='radioCodeName' />
+            <label for='radioCodeName'>Code:Name</label>
+          </div>
+          <div>
+            <input type='radio' name='contains' id='radioCode' />
+            <label for='radioCode'>Code</label>
+          </div>
+        </section>
+
+        <h2>Folder to sync</h2>
+        <section>
+          <div>
+            Selected folder: <code id='selected'></code>
+          </div>
+          <div>
+            <input type='file' id='dir' webkitdirectory directory multiple />
+          </div>
+        </section>
+
       </div>
 
     </div>
@@ -26,17 +44,16 @@
 
       var dir = document.querySelector('#dir');
       var selected = document.querySelector('#selected');
-      var log = document.querySelector('#log');
 
       dir.addEventListener('change', function (e) {
-        selected.value = e.target.files[0].path;
+        selected.innerText = e.target.files[0].path;
         // Update watchdir config
         ipc.send('watchdir', e.target.files[0].path);
       });
 
 
       ipc.on('state', function (state) {
-        selected.value = state.watchDir;
+        selected.innerText = state.watchDir;
       });
     };
     </script>
