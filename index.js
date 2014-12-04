@@ -57,48 +57,7 @@ app.on('ready', function () {
 
   // Init tray icon
   appIcon = new Tray(config.trayIcon);
-  var contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Open',
-      type: 'normal',
-      click : openWindow
-    },
-    {
-      label: 'Hide',
-      type: 'normal',
-      click : hideWindow
-    },
-    {
-      label: 'Status',
-      submenu: [
-        {
-          label: 'Enabled',
-          type: 'radio'
-        },
-        {
-          label: 'Disabled',
-          type: 'radio'
-        }
-      ]
-    },
-    {
-      label: 'Settings',
-      type: 'normal',
-      visible: false
-    },
-    {
-      label: 'About',
-      type: 'normal',
-      visible: false
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Quit',
-      click: function () { app.quit(); }
-    }
-  ]);
+  var contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
   appIcon.setToolTip(app.getName());
   appIcon.setContextMenu(contextMenu);
 });
@@ -157,4 +116,47 @@ var startWatching = function (dir) {
       });
     }
   );
-}
+};
+
+var trayMenuTemplate = [
+  {
+    label: 'Open',
+    type: 'normal',
+    click : openWindow
+  },
+  {
+    label: 'Hide',
+    type: 'normal',
+    click : hideWindow
+  },
+  {
+    label: 'Status',
+    submenu: [
+      {
+        label: 'Enabled',
+        type: 'radio'
+      },
+      {
+        label: 'Disabled',
+        type: 'radio'
+      }
+    ]
+  },
+  {
+    label: 'Settings',
+    type: 'normal',
+    visible: false
+  },
+  {
+    label: 'About',
+    type: 'normal',
+    visible: false
+  },
+  {
+    type: 'separator'
+  },
+  {
+    label: 'Quit',
+    click: function () { app.quit(); }
+  }
+];
