@@ -22,17 +22,17 @@ describe('migrate lib', function () {
   var output = [
     {
       subject: '[Group_01B] Anatomy and Patophysiology',
-      room: 'Room_133',
+      location: 'Room_133',
       description: 'LEE Group_01B',
-      date: 'Sat Oct 11 2014 08:00:00 GMT+0300 (EEST)',
+      date_start: 'Sat Oct 11 2014 08:00:00 GMT+0300 (EEST)',
       date_end: 'Sat Oct 11 2014 09:45:00 GMT+0300 (EEST)'
     },
 
     {
       subject: '[Group_01B] Entrepreneurship',
-      room: 'Room_139',
+      location: 'Room_139',
       description: 'BARNES Group_01B',
-      date: 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
+      date_start: 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
       date_end: 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
     }
   ];
@@ -46,6 +46,32 @@ describe('migrate lib', function () {
     var data = migrate.fromArray(input);
 
     assert.deepEqual(output, data);
+  });
+
+  it('should find code and name', function () {
+    var str = 'Form-A:Group of Form-A';
+    var res = [{
+      code : 'Form-A',
+      name : 'Group of Form-A'
+    }];
+
+    assert.deepEqual(res, migrate.findCodes(str));
+  });
+
+  it('should find multiple codes and names', function () {
+    var str = 'Form-A:Group of Form-A TALLEY:D. Talley';
+    var res = [
+      {
+        code : 'Form-A',
+        name : 'Group of Form-A'
+      },
+      {
+        code : 'TALLEY',
+        name : 'D. Talley'
+      }
+    ];
+
+    assert.deepEqual(res, migrate.findCodes(str));
   });
 
 });
