@@ -89,21 +89,15 @@ var migrate = {
    *    ]
    */
   findCodes : function (str) {
-    var found = [];
-    var codes = str.match(/[a-z0-9_-]+:[a-z0-9 -_.]+/ig);
+    var codes = str.split(/\s(?=\S+?:)/);
 
-    // When nothing matched return empty array
-    if(!codes) return found;
-
-    found = codes.map(function (item) {
-      var i = item.indexOf(':');
+    return codes.map(function (item) {
+      var parts = item.split(':');
       return {
-        code : item.slice(0, i),
-        name : item.slice(i + 1)
+        code : parts[0],
+        name : parts[1] || ''
       };
-    });
-
-    return found;
+    });;
   }
 
 };
