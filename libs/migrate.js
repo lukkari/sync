@@ -108,7 +108,7 @@ var migrate = {
         code : parts[0],
         name : parts[1] || ''
       };
-    });;
+    });
   }
 
 };
