@@ -62,21 +62,32 @@ var migrate = {
       }
     };
 
+    // TO DO: determine group codes and teacher codes
+    //        by not using this hack
+    //
     // Get group codes and names from subject object
     var group_codes = item.subject.match(/\[(.*)\]/) || '';
-    group_codes = group_codes[0];
+    // Remove square brackets
+    group_codes = group_codes[0].replace(/\[|\]/g, '');
     var room_codes = item.location;
-    var teacher_codes = item.description.slice(group_codes.length - 2);
+    var teacher_codes = item.description.slice(group_codes.length);
 
-    group_codes = this.findCodes(group_codes);
-    room_codes = this.findCodes(room_codes);
-    teacher_codes = this.findCodes(teacher_codes);
+    entry.subject = item.subject.slice(group_codes.length + 2).trim();
+    entry.groups = this.findCodes(group_codes).map(function (code) {
+      return code.name;
+    });
+    entry.rooms = this.findCodes(room_codes).map(function (code) {
+      return code.name;
+    });
+    entry.teachers = this.findCodes(teacher_codes).map(function (code) {
+      return code.name;
+    });
 
     return entry;
   },
 
   /**
-   * Find codes
+   * Find codes and names
    *
    * Ex:
    *    Input 'Form-A:Group of Form-A'
@@ -89,7 +100,7 @@ var migrate = {
    *    ]
    */
   findCodes : function (str) {
-    var codes = str.split(/\s(?=\S+?:)/);
+    var codes = str.trim().split(/\s(?=\S+?:)/);
 
     return codes.map(function (item) {
       var parts = item.split(':');
