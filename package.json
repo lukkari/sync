@@ -8,10 +8,17 @@
     "prod": "../binaries/atom ./",
     "test": "mocha"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaynetro/lukkari-sync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zaynetro/lukkari-sync/issues"
+  },
   "devDependencies": {
     "mocha": "^2.0.1"
   },
   "dependencies": {
-    "csv-parse": "0.0.6"
+    "csv-parse": "~0.0.6"
   }
 }
