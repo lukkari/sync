@@ -13,12 +13,7 @@ fs.readFile(componentDataPath, { encoding : 'utf-8' }, function (err, data) {
   var lines = data.split('\n');
 
   var categories = ['groups', 'teachers', 'rooms', 'other'];
-  var container = categories.map(function (item) {
-    return {
-      name : item,
-      data : []
-    }
-  });
+  var container = {};
 
   lines.forEach(function (line) {
     if(!line.length) return;
@@ -26,16 +21,14 @@ fs.readFile(componentDataPath, { encoding : 'utf-8' }, function (err, data) {
     var data = line.split('=')[1];
     var items = data.split(';');
 
-    container[items[2] - 1].data.push({
-      code : items[0],
-      name : items[1]
-    });
+    container[items[0]] = {
+      name : items[1],
+      category : categories[items[2] - 1]
+    };
   });
 
-  container.forEach(function (item) {
-    fs.writeFile(item.name + '.json', JSON.stringify(item.data, null, '\t'), function (err) {
-      if(err) console.log(err);
-    });
+  fs.writeFile('components.json', JSON.stringify(container, null, '\t'), function (err) {
+    if(err) console.log(err);
   });
 
   console.log('Files are processing');
