@@ -95,4 +95,27 @@ describe('migrate lib', function () {
     assert.deepEqual(out, migrate.processItem(input));
   });
 
+  it('should process old item', function () {
+    var input = {
+      subject : '[0ATRK12] Entrepreneurship',
+      location: 'B155(18)',
+      description: '0ATRK12 ANTMA',
+      date_start: 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
+      date_end: 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
+    };
+
+    var out = {
+      subject : 'Entrepreneurship',
+      rooms : ['B155 TIKO (18)'],
+      teachers : ['Marita Antikainen'],
+      groups : ['ALIIBK12'],
+      date : {
+        start : 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
+        end : 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
+      }
+    };
+
+    assert.deepEqual(out, migrate.processOldItem(input));
+  });
+
 });

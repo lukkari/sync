@@ -3,6 +3,10 @@
  */
 
 var fs = require('fs');
+var path = require('path');
+var util = require('./util');
+
+var components = util.read(path.join(__dirname, '../data/components.json'));
 
 var migrate = {
 
@@ -20,7 +24,6 @@ var migrate = {
    * 'Location' ]
    *
    */
-
   fromArray : function (data) {
     var keys = data[0];
     var out = [];
@@ -47,13 +50,13 @@ var migrate = {
     return out;
   },
 
+
   /**
    * Process entry item
    *
    *   - Find codes in each
    *   - Return new object with categories
    */
-
   processItem : function (item) {
     var entry = {
       date : {
@@ -85,6 +88,42 @@ var migrate = {
 
     return entry;
   },
+
+
+  /**
+   * Process entry item as above, but for old items (only codes present)
+   *
+   *   - Find codes in each
+   *   - Return new object with categories
+   */
+  processOldItem : function (item) {
+    var entry = {
+      date : {
+        start : item.date_start,
+        end : item.date_end
+      }
+    };
+
+    entry.subject = item.subject.replace(/\[.*\]/, '').trim();
+
+    var categories = ['groups', 'teachers', 'rooms'];
+    categories.forEach(function (cat) {
+      entry[cat] = [];
+    });
+
+    var codes = []
+      .concat(item.description.split(/\s/))
+      .concat(item.location.split(/\s/));
+
+    codes.forEach(function (code) {
+      if(components.hasOwnProperty(code)) {
+        entry[components[code].category].push(components[code].name);
+      }
+    });
+
+    return entry;
+  },
+
 
   /**
    * Find codes and names
