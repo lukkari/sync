@@ -12,7 +12,7 @@ var Menu = require('menu');
 var ipc = require('ipc');
 
 // App libs
-var store = require('./libs/store/');
+var store = require('./libs/store');
 var watcher = require('./libs/watcher');
 var csv = require('csv-parse');
 var fs = require('fs');
