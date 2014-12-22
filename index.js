@@ -17,6 +17,7 @@ var watcher = require('./libs/watcher');
 var csv = require('csv-parse');
 var fs = require('fs');
 var migrate = require('./libs/migrate');
+var io = require('socket.io-client');
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
@@ -60,6 +61,8 @@ app.on('ready', function () {
   var contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
   appIcon.setToolTip(app.getName());
   appIcon.setContextMenu(contextMenu);
+
+  setUpSockets();
 });
 
 
@@ -95,6 +98,7 @@ var hideWindow = function () {
 };
 
 var startWatching = function (dir) {
+  console.log('start watching');
 
   watcher.watch(dir,
     {
@@ -111,7 +115,9 @@ var startWatching = function (dir) {
         csv(data, { delimiter: ',' }, function (err, output) {
           if(err) return console.log(err);
 
-          console.log(migrate.fromArray(output));
+          var data = migrate.fromArray(output);
+          data = data.map(migrate.processOldItem);
+          // Process data to the server
         });
       });
     }
@@ -160,3 +166,20 @@ var trayMenuTemplate = [
     click: function () { app.quit(); }
   }
 ];
+
+function setUpSockets() {
+  var manage = io.connect('http://localhost:3000/manage', { query : 'token=Roman' });
+
+  manage
+    .on('connect', function () {
+      console.log('Connected');
+      manage.on('news', function (data) {
+        console.log(data);
+      });
+
+      manage.emit('hello', {});
+    })
+    .on('connect_failed', function (reason) {
+      console.error('Failed: ', reason);
+    });
+};
