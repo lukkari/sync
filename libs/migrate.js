@@ -65,25 +65,21 @@ var migrate = {
       }
     };
 
-    // TO DO: determine group codes and teacher codes
-    //        by not using this hack
-    //
-    // Get group codes and names from subject object
-    var group_codes = item.subject.match(/\[(.*)\]/) || '';
-    // Remove square brackets
-    group_codes = group_codes[0].replace(/\[|\]/g, '');
-    var room_codes = item.location;
-    var teacher_codes = item.description.slice(group_codes.length);
+    entry.subject = item.subject.replace(/\[.*\]/, '').trim();
 
-    entry.subject = item.subject.slice(group_codes.length + 2).trim();
-    entry.groups = this.findCodes(group_codes).map(function (code) {
-      return code.name;
+    var categories = ['groups', 'teachers', 'rooms'];
+    categories.forEach(function (cat) {
+      entry[cat] = [];
     });
-    entry.rooms = this.findCodes(room_codes).map(function (code) {
-      return code.name;
-    });
-    entry.teachers = this.findCodes(teacher_codes).map(function (code) {
-      return code.name;
+
+    var codeString = item.description + ' ' + item.location;
+    var codes = this.findCodes(codeString);
+
+    codes.forEach(function (code) {
+      // Use other components data in the future
+      if(components.hasOwnProperty(code.code)) {
+        entry[components[code.code].category].push(components[code.code].name);
+      }
     });
 
     return entry;

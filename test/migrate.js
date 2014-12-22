@@ -72,20 +72,20 @@ describe('migrate lib', function () {
     assert.deepEqual(res, migrate.findCodes(str));
   });
 
-  it('should process item object', function () {
+  it('should process item', function () {
     var input = {
-      subject : '[Form-A:Group of Form-A] Entrepreneurship',
-      location: 'Room:Room_139',
-      description: 'Form-A:Group of Form-A TALLEY:D. Talley',
+      subject : '[NBIOTS12W:NBIOTS12W] Entrepreneurship',
+      location: 'B213FM(X):B213 FM',
+      description: 'NBIOTS12W:NBIOTS12W LEHRA:Raimo Lehto',
       date_start: 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
       date_end: 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
     };
 
     var out = {
       subject : 'Entrepreneurship',
-      rooms : ['Room_139'],
-      teachers : ['D. Talley'],
-      groups : ['Group of Form-A'],
+      rooms : ['B213 FM'],
+      teachers : ['Raimo Lehto'],
+      groups : ['NBIOTS12W'],
       date : {
         start : 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
         end : 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
