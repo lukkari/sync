@@ -61,8 +61,6 @@ app.on('ready', function () {
   var contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
   appIcon.setToolTip(app.getName());
   appIcon.setContextMenu(contextMenu);
-
-  setUpSockets();
 });
 
 
@@ -100,6 +98,8 @@ var hideWindow = function () {
 var startWatching = function (dir) {
   console.log('start watching');
 
+  var socket = setUpSockets();
+
   watcher.watch(dir,
     {
       types : ['csv'],
@@ -118,6 +118,14 @@ var startWatching = function (dir) {
           var data = migrate.fromArray(output);
           data = data.map(migrate.processOldItem);
           // Process data to the server
+          socket.emit('new_version');
+          socket.on('start_update', function (res) {
+            var v = res.version || 0;
+            data.forEach(function (item) {
+              item.version = v;
+              socket.emit('add_entry', item);
+            });
+          });
         });
       });
     }
@@ -173,13 +181,10 @@ function setUpSockets() {
   manage
     .on('connect', function () {
       console.log('Connected');
-      manage.on('news', function (data) {
-        console.log(data);
-      });
-
-      manage.emit('hello', {});
     })
     .on('connect_failed', function (reason) {
       console.error('Failed: ', reason);
     });
+
+  return manage;
 };
