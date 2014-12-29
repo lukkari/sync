@@ -20,7 +20,7 @@ module.exports = {
       .ensureDir(dir)
       .ensureFile(this.stateFile, state);
 
-    this.state = util.read(this.stateFile);
+    this.state = util.read(this.stateFile, true);
     return this;
   },
 

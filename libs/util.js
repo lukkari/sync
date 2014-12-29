@@ -23,8 +23,12 @@ module.exports = {
     });
   },
 
-  read : function (dir) {
-    return this.restore(fs.readFileSync(dir));
+  read : function (dir, isJSON) {
+    return (
+      isJSON
+        ? this.restore(fs.readFileSync(dir))
+        : fs.readFileSync(dir, { encoding : 'utf-8' })
+    );
   },
 
   ensureDir : function (dir) {
