@@ -4,8 +4,32 @@
 var migrate = require('../libs/migrate');
 
 var assert = require('assert');
+var fs = require('fs');
+var path = require('path');
 
 describe('migrate lib', function () {
+
+  var tmpDir = 'tmp';
+  var mimosaFile = 'mimosa.mxt';
+  var mimosaData = [
+    '[Test]',
+    'Some data',
+    'bla-bla',
+    '',
+    '[Componentdata]',
+    '1=0ATRK11mar;ALIIBK11mar;1;5;0',
+    '2=0ATRK12;ALIIBK12;1;0;0',
+    '',
+    '[AnotherTest]',
+    'hello world',
+    'lol'
+  ];
+  mimosaData = mimosaData.join('\n');
+
+  before(function () {
+    fs.mkdirSync(tmpDir);
+    fs.writeFileSync(path.join(tmpDir, mimosaFile), mimosaData);
+  });
 
   it('do nothing for empty array', function () {
     var empty_input = [];
@@ -116,6 +140,17 @@ describe('migrate lib', function () {
     };
 
     assert.deepEqual(out, migrate.processOldItem(input));
+  });
+
+  it('should get componentdata', function () {
+    var filepath = path.join(tmpDir, mimosaFile);
+    var data = migrate.componentsFromMimosa(filepath);
+    assert.equal(2, data.length);
+  });
+
+  after(function () {
+    fs.unlinkSync(path.join(tmpDir, mimosaFile));
+    fs.rmdirSync(tmpDir);
   });
 
 });

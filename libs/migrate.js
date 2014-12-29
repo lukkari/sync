@@ -144,6 +144,19 @@ var migrate = {
         name : parts[1] || ''
       };
     });
+  },
+
+
+  /**
+   * Get Componentdata from Mimosa text file
+   */
+  componentsFromMimosa : function (filepath) {
+    var content = util.read(filepath);
+    var components = content.match(/\[Componentdata\]([^[]+)/);
+
+    if(components && components.length) return components[1].trim().split(/\s/);
+
+    return null;
   }
 
 };
