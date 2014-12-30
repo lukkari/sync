@@ -150,6 +150,16 @@ describe('migrate lib', function () {
     assert.equal(2, data.length);
   });
 
+  it('should process component', function () {
+    var input = '1=0ATRK11mar;ALIIBK11mar;1;5;0';
+    var output = {
+      code : '0ATRK11mar',
+      name : 'ALIIBK11mar',
+      category : 'group'
+    };
+    assert.deepEqual(output, migrate.processComponent(input));
+  });
+
   after(function () {
     fs.unlinkSync(path.join(tmpDir, mimosaFile));
     fs.rmdirSync(tmpDir);

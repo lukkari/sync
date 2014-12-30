@@ -154,9 +154,33 @@ var migrate = {
     var content = util.read(filepath);
     var components = content.match(/\[Componentdata\]([^[]+)/);
 
-    if(components && components.length) return components[1].trim().split(/\s/);
+    if(components && components.length) {
+      return (
+        components[1]
+          .trim()
+          .split(/\s/)
+          .filter(function (el) { return el && el.length > 0; })
+      );
+    }
 
     return null;
+  },
+
+  /**
+   * Process single component
+   */
+  processComponent : function (line) {
+    var categories = ['group', 'teacher', 'room', 'other'];
+    var container = {};
+
+    var data = line.split('=')[1];
+    var items = data.split(';');
+
+    return {
+      code : items[0],
+      name : items[1],
+      category : categories[items[2] - 1]
+    };
   }
 
 };

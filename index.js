@@ -57,7 +57,10 @@ app.on('ready', function () {
   });
 
   ipc.on('mimosafile', function (e, file) {
-    console.log(file);
+    var components = migrate
+      .componentsFromMimosa(file)
+      .map(migrate.processComponent);
+    // TO DO: send component to the server and save result
   });
 
   // Init tray icon
