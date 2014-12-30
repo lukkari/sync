@@ -6,6 +6,8 @@
   "scripts": {
     "start": "DEBUG=true ../binaries/atom ./",
     "prod": "../binaries/atom ./",
+    "mac": "../binaries/Atom.app/Contents/MacOS/Atom ./",
+    "debug-mac": "DEBUG=true ../binaries/Atom.app/Contents/MacOS/Atom ./",
     "test": "mocha"
   },
   "devDependencies": {
