@@ -41,8 +41,8 @@ var migrate = {
         subject: el[0],
         location: el[6],
         description: el[5],
-        date_start: (new Date(d_start)).toString(),
-        date_end: (new Date(d_end)).toString()
+        date_start: (new Date(d_start)).toISOString(),
+        date_end: (new Date(d_end)).toISOString()
       };
       out.push(item);
     }

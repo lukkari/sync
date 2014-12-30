@@ -9,7 +9,9 @@ var path = require('path');
 
 describe('migrate lib', function () {
 
-  var tmpDir = 'tmp';
+  var baseDir = path.resolve(__dirname + '/../');
+
+  var tmpDir = path.join(baseDir, 'tmp');
   var mimosaFile = 'mimosa.mxt';
   var mimosaData = [
     '[Test]',
@@ -54,16 +56,16 @@ describe('migrate lib', function () {
         subject: '[Group_01B] Anatomy and Patophysiology',
         location: 'Room_133',
         description: 'LEE Group_01B',
-        date_start: 'Sat Oct 11 2014 08:00:00 GMT+0300 (EEST)',
-        date_end: 'Sat Oct 11 2014 09:45:00 GMT+0300 (EEST)'
+        date_start: '2014-10-11T05:00:00.000Z',
+        date_end: '2014-10-11T06:45:00.000Z'
       },
 
       {
         subject: '[Group_01B] Entrepreneurship',
         location: 'Room_139',
         description: 'BARNES Group_01B',
-        date_start: 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
-        date_end: 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
+        date_start: '2014-10-11T07:00:00.000Z',
+        date_end: '2014-10-11T07:45:00.000Z'
       }
     ];
 
@@ -101,8 +103,8 @@ describe('migrate lib', function () {
       subject : '[NBIOTS12W:NBIOTS12W] Entrepreneurship',
       location: 'B213FM(X):B213 FM',
       description: 'NBIOTS12W:NBIOTS12W LEHRA:Raimo Lehto',
-      date_start: 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
-      date_end: 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
+      date_start: '2014-10-11T07:00:00.000Z',
+      date_end: '2014-10-11T07:45:00.000Z'
     };
 
     var out = {
@@ -111,8 +113,8 @@ describe('migrate lib', function () {
       teachers : ['Raimo Lehto'],
       groups : ['NBIOTS12W'],
       date : {
-        start : 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
-        end : 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
+        start : '2014-10-11T07:00:00.000Z',
+        end : '2014-10-11T07:45:00.000Z'
       }
     };
 
@@ -124,8 +126,8 @@ describe('migrate lib', function () {
       subject : '[0ATRK12] Entrepreneurship',
       location: 'B155(18)',
       description: '0ATRK12 ANTMA',
-      date_start: 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
-      date_end: 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
+      date_start: '2014-10-11T07:00:00.000Z',
+      date_end: '2014-10-11T07:45:00.000Z'
     };
 
     var out = {
@@ -134,8 +136,8 @@ describe('migrate lib', function () {
       teachers : ['Marita Antikainen'],
       groups : ['ALIIBK12'],
       date : {
-        start : 'Sat Oct 11 2014 10:00:00 GMT+0300 (EEST)',
-        end : 'Sat Oct 11 2014 10:45:00 GMT+0300 (EEST)'
+        start : '2014-10-11T07:00:00.000Z',
+        end : '2014-10-11T07:45:00.000Z'
       }
     };
 
