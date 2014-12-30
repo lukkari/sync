@@ -178,7 +178,10 @@ var migrate = {
 
     return {
       code : items[0],
-      name : items[1],
+      data : {
+        name : items[1],
+        code : items[0]
+      },
       category : categories[items[2] - 1]
     };
   }

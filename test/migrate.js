@@ -154,7 +154,10 @@ describe('migrate lib', function () {
     var input = '1=0ATRK11mar;ALIIBK11mar;1;5;0';
     var output = {
       code : '0ATRK11mar',
-      name : 'ALIIBK11mar',
+      data : {
+        name : 'ALIIBK11mar',
+        code : '0ATRK11mar'
+      },
       category : 'group'
     };
     assert.deepEqual(output, migrate.processComponent(input));

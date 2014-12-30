@@ -18,6 +18,7 @@ var csv = require('csv-parse');
 var fs = require('fs');
 var migrate = require('./libs/migrate');
 var io = require('socket.io-client');
+var request = require('request');
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
@@ -26,6 +27,13 @@ require('crash-reporter').start(config.crashReporter);
  * Current app state variables
  */
 var state = null;
+var categoryNames = ['groups', 'teachers', 'rooms'];
+var categories = {
+  groups : [],
+  teachers : [],
+  rooms : []
+};
+var socket;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
 var win = null;
@@ -46,6 +54,9 @@ app.on('ready', function () {
   store = store.init(app.getDataPath(), config.stateObj);
   state = store.getState();
 
+  // Init sockets
+  socket = setUpSockets();
+
   // If watching dir is not specified, try to set it up
   if(!store.validDir(state.watchDir)) openWindow();
   else startWatching(state.watchDir);
@@ -60,7 +71,26 @@ app.on('ready', function () {
     var components = migrate
       .componentsFromMimosa(file)
       .map(migrate.processComponent);
-    // TO DO: send component to the server and save result
+    components.forEach(function (component) {
+       var action = 'add_' + component.category;
+       socket.emit(action, component.data);
+    });
+  });
+
+  socket.on('new_group', function (group) {
+    console.log(group);
+    categories.groups.push(group);
+  });
+
+  // Get categories
+  var baseUrl = 'http://lukkari.dc.turkuamk.fi/api/';
+  categoryNames.forEach(function (cat) {
+    request(baseUrl + cat, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var cats = JSON.parse(body);
+        categories[cat] = cats;
+      }
+    });
   });
 
   // Init tray icon
@@ -104,8 +134,6 @@ var hideWindow = function () {
 
 var startWatching = function (dir) {
   console.log('start watching');
-
-  var socket = setUpSockets();
 
   watcher.watch(dir,
     {
