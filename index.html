@@ -33,6 +33,13 @@
           </div>
         </section>
 
+        <h2>Select Mimosa text file</h2>
+        <section>
+          <div>
+            <input type='file' id='mimosaFile' />
+          </div>
+        </section>
+
       </div>
 
     </div>
@@ -44,17 +51,26 @@
 
       var dir = document.querySelector('#dir');
       var selected = document.querySelector('#selected');
+      var mimosaFile = document.querySelector('#mimosaFile');
 
       dir.addEventListener('change', function (e) {
+        if(!e.target.files.length) return;
+
         selected.innerText = e.target.files[0].path;
         // Update watchdir config
         ipc.send('watchdir', e.target.files[0].path);
-      });
+      }, false);
 
 
       ipc.on('state', function (state) {
         selected.innerText = state.watchDir;
       });
+
+      mimosaFile.addEventListener('change', function (e) {
+        if(!e.target.files.length) return;
+
+        ipc.send('mimosafile', e.target.files[0].path);
+      }, false);
     };
     </script>
   </body>

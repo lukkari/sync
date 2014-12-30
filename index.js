@@ -56,6 +56,10 @@ app.on('ready', function () {
     startWatching(dir);
   });
 
+  ipc.on('mimosafile', function (e, file) {
+    console.log(file);
+  });
+
   // Init tray icon
   appIcon = new Tray(config.trayIcon);
   var contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
