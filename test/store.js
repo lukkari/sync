@@ -32,6 +32,27 @@ describe('store lib', function () {
     assert.equal(2, data[0]);
   });
 
+  it('should create collection', function () {
+    var name = 'test';
+    var coll = store.addCollection(name);
+    assert.equal(name, coll.name);
+  });
+
+  it('should add items to collection', function () {
+    var name = 'items';
+    var coll = store.addCollection(name);
+    var items = ['one', 'two'];
+    coll.add(items);
+    assert.deepEqual(items, coll.all);
+  });
+
+  it('should find item in collection', function () {
+    // Use collection from previous test
+    var name = 'items';
+    var coll = store.getCollection(name);
+    assert.equal('one', coll.find(function (item) { return item == 'one'; }));
+  });
+
   after(function () {
     fs.unlinkSync(stateFile);
     fs.rmdirSync(dir);

@@ -5,6 +5,56 @@
 var util = require('./util');
 var path = require('path');
 
+
+/**
+ * Simple data wrapper with
+ * modifying and accessing methods
+ */
+var collection = function (name) {
+
+  var _name = name;
+  var _data = [];
+
+  return {
+
+    get name() {
+      return _name;
+    },
+
+    get all() {
+      return _data;
+    },
+
+    get count() {
+      return _data.length;
+    },
+
+    find : function (queryFunc) {
+      return _data.filter(queryFunc);
+    },
+
+    findOne : function (queryFunc) {
+      // TO DO: implement find method
+      // return _data.find(queryFunc);
+    },
+
+    clean : function () {
+      _data = [];
+    },
+
+    add : function (items) {
+      if(typeof items == 'undefined') return;
+
+      if(Array.isArray(items)) {
+        _data = _data.concat(items);
+      } else {
+        _data.push(items);
+      }
+    }
+  };
+
+};
+
 module.exports = {
 
   /**
@@ -15,6 +65,7 @@ module.exports = {
   init: function (dir, state) {
     this.dir = dir;
     this.stateFile = path.join(dir, 'state.json');
+    this._collections = {};
 
     util
       .ensureDir(dir)
@@ -31,6 +82,31 @@ module.exports = {
   setState : function (state) {
     this.state = state;
     util.write(this.stateFile, this.state);
+  },
+
+  /**
+   * Create simple collection or
+   * return collection if exists
+   */
+  addCollection : function (name) {
+    // If exists return it
+    if(this._collections.hasOwnProperty(name)) {
+      return this._collections[name];
+    }
+    // Or create new one
+    this._collections[name] = collection(name);
+    return this._collections[name];
+  },
+
+  /**
+   * Return previously created collection or undefined
+   */
+  getCollection : function (name) {
+    // If exists return it
+    if(this._collections.hasOwnProperty(name)) {
+      return this._collections[name];
+    }
+    return undefined;
   }
 
-}
+};
