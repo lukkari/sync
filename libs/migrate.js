@@ -151,7 +151,7 @@ var migrate = {
    * Get Componentdata from Mimosa text file
    */
   componentsFromMimosa : function (filepath) {
-    var content = util.read(filepath);
+    var content = util.decode(util.rawRead(filepath), 'ISO-8859-1');
     var components = content.match(/\[Componentdata\]([^[]+)/);
 
     if(components && components.length) {

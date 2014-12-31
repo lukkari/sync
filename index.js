@@ -72,6 +72,8 @@ app.on('ready', function () {
        var action = 'add_' + component.category;
        socket.emit(action, component.data);
     });
+
+    console.log('Total: ', components.length);
   });
 
   // Listen to all categories

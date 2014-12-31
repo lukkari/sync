@@ -3,6 +3,7 @@
  */
 
 var fs = require('fs');
+var iconv = require('iconv-lite');
 
 module.exports = {
 
@@ -47,6 +48,14 @@ module.exports = {
 
   restore : function (data) {
     return JSON.parse(data);
+  },
+
+  decode : function (data, from) {
+    return iconv.decode(data, from);
+  },
+
+  rawRead : function (dir) {
+    return fs.readFileSync(dir);
   }
 
 };

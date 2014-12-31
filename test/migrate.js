@@ -22,6 +22,7 @@ describe('migrate lib', function () {
     '1=0ATRK11mar;ALIIBK11mar;1;5;0',
     '2=0ATRK12;ALIIBK12;1;0;0',
     '3=HALJA;Jaakko Haltia;2;204;0',
+    '4=MYLPÄ;Päivi Myllymäki;2;16;0',
     '',
     '[AnotherTest]',
     'hello world',
@@ -148,7 +149,7 @@ describe('migrate lib', function () {
   it('should get componentdata', function () {
     var filepath = path.join(tmpDir, mimosaFile);
     var data = migrate.componentsFromMimosa(filepath);
-    assert.equal(3, data.length);
+    assert.equal(4, data.length);
   });
 
   it('should process component', function () {
