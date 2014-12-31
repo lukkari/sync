@@ -29,11 +29,6 @@ require('crash-reporter').start(config.crashReporter);
  */
 var state = null;
 var categoryNames = ['groups', 'teachers', 'rooms'];
-var categories = {
-  groups : [],
-  teachers : [],
-  rooms : []
-};
 var socket;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
@@ -79,26 +74,26 @@ app.on('ready', function () {
     });
   });
 
-  // TO DO: use single handler for all categories
-  socket.on('group_added', function (group) {
-    categories.groups.push(group);
-  });
-
-  socket.on('teacher_added', function (teacher) {
-    categories.teachers.push(teacher);
-  });
-
-  socket.on('room_added', function (room) {
-    categories.rooms.push(rooms);
+  // Listen to all categories
+  categoryNames.forEach(function (name) {
+    var action = name + '_added';
+    socket.on(action, function (item) {
+      // Add new item to category collection
+      store.getCollection(name).add(item);
+    });
   });
 
   // Load categories
-  var baseUrl = 'http://localhost:3000/api/';
+  var apiUrl = config.baseUrl + '/api/';
   categoryNames.forEach(function (cat) {
-    request(baseUrl + cat, function (error, response, body) {
+    // Form category api url
+    var catUrl = apiUrl + cat;
+    request(catUrl, function (error, response, body) {
       if (!error && response.statusCode == 200) {
+        // TO DO: handle bad data (not json)
         var cats = JSON.parse(body);
-        categories[cat] = cats;
+        var collection = store.addCollection(cat);
+        collection.add(cats);
       }
     });
   });
@@ -232,4 +227,4 @@ function setUpSockets() {
     });
 
   return manage;
-};
+}

@@ -42,6 +42,9 @@ var collection = function (name) {
       _data = [];
     },
 
+    /**
+     * Add item or items to the collection
+     */
     add : function (items) {
       if(typeof items == 'undefined') return;
 
