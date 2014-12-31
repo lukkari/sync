@@ -75,20 +75,16 @@ app.on('ready', function () {
     components.forEach(function (component) {
        var action = 'add_' + component.category;
        socket.emit(action, component.data);
-       console.log('Action: ', action);
-       console.log('Data: ', component.data);
     });
   });
 
   // TO DO: use single handler for all categories
   socket.on('group_added', function (group) {
     categories.groups.push(group);
-    console.log('new group: ', group);
   });
 
   socket.on('teacher_added', function (teacher) {
     categories.teachers.push(teacher);
-    console.log('new teacher: ', teacher);
   });
 
   socket.on('room_added', function (room) {
