@@ -158,7 +158,7 @@ var migrate = {
       return (
         components[1]
           .trim()
-          .split(/\s/)
+          .split(/\n/)
           .filter(function (el) { return el && el.length > 0; })
       );
     }
