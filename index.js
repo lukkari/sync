@@ -12,6 +12,7 @@ var Menu = require('menu');
 var ipc = require('ipc');
 
 // App libs
+var util = require('./libs/util');
 var store = require('./libs/store');
 var watcher = require('./libs/watcher');
 var csv = require('csv-parse');
@@ -58,7 +59,7 @@ app.on('ready', function () {
   socket = setUpSockets();
 
   // If watching dir is not specified, try to set it up
-  if(!store.validDir(state.watchDir)) openWindow();
+  if(!util.exists(state.watchDir)) openWindow();
   else startWatching(state.watchDir);
 
   ipc.on('watchdir', function (e, dir) {

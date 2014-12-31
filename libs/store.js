@@ -31,10 +31,6 @@ module.exports = {
   setState : function (state) {
     this.state = state;
     util.write(this.stateFile, this.state);
-  },
-
-  validDir : function (dir) {
-    return util.exists(dir);
   }
 
 }
