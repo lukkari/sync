@@ -152,11 +152,12 @@ var migrate = {
    */
   componentsFromMimosa : function (filepath) {
     var content = util.decode(util.rawRead(filepath), 'ISO-8859-1');
-    var components = content.match(/\[Componentdata\]([^[]+)/);
+    var components = content.replace(/\r/g, '').match(/\[Componentdata\]\n(.+\n)+/);
 
     if(components && components.length) {
       return (
-        components[1]
+        components[0]
+          .replace(/.*\n/, '') // Remove first line
           .trim()
           .split(/\n/)
           .filter(function (el) { return el && el.length > 0; })

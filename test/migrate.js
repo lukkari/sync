@@ -22,7 +22,7 @@ describe('migrate lib', function () {
     '1=0ATRK11mar;ALIIBK11mar;1;5;0',
     '2=0ATRK12;ALIIBK12;1;0;0',
     '3=HALJA;Jaakko Haltia;2;204;0',
-    '4=MYLPÄ;Päivi Myllymäki;2;16;0',
+    '4=MYLPÄ;Päivi Myllymäki [some text];2;16;0',
     '',
     '[AnotherTest]',
     'hello world',

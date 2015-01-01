@@ -66,14 +66,13 @@ app.on('ready', function () {
   ipc.on('mimosafile', function (e, file) {
     var components = migrate
       .componentsFromMimosa(file)
-      .map(migrate.processComponent);
+      .map(migrate.processComponent)
+      .filter(function (item) { return item.category != 'other'; });
 
     components.forEach(function (component) {
        var action = 'add_' + component.category;
        socket.emit(action, component.data);
     });
-
-    console.log('Total: ', components.length);
   });
 
   // Listen to all categories
