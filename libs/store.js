@@ -110,6 +110,39 @@ module.exports = {
       return this._collections[name];
     }
     return undefined;
+  },
+
+  /**
+   * Return multiple collections
+   */
+  getCollections : function (names) {
+    var self = this;
+    return names.map(function (name) { return self.getCollection(name); });
+  },
+
+  /**
+   * Find data in multiple collections
+   * @param {Array}    names    List of collection names
+   * @param {Function} queryFun Query function
+   */
+  findInCollections : function (names, queryFun) {
+    var cols = this.getCollections(names);
+    var found = [];
+    cols.forEach(function (col) {
+      found = found.concat(col.find(queryFun));
+    });
+    return found;
+  },
+
+  /**
+   * Get collection name where item is found
+   */
+  getCollectionName : function (names, queryFun) {
+    var cols = this.getCollections(names);
+    for(var i = 0; i < cols.length; i++) {
+      var found = cols[i].find(queryFun);
+      if(typeof found !== 'undefined') return cols[i].name;
+    }
   }
 
 };

@@ -53,6 +53,23 @@ describe('store lib', function () {
     assert.equal('one', coll.find(function (item) { return item == 'one'; }));
   });
 
+  it('should find item in multiple collections', function () {
+    var names = ['col1', 'col2'];
+    var queryFun = function (item) { return item === 1; };
+    names.forEach(function (name, index) {
+      var col = store.addCollection(name);
+      col.add([index + 1, 2*(index + 1)]);
+    });
+    assert.deepEqual([1], store.findInCollections(names, queryFun));
+  });
+
+  it('should get collection name by query', function () {
+    // Use previously added collections
+    var names = ['col1', 'col2'];
+    var queryFun = function (item) { return item === 1; };
+    assert.equal('col1', store.getCollectionName(names, queryFun));
+  });
+
   after(function () {
     fs.unlinkSync(stateFile);
     fs.rmdirSync(dir);
