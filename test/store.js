@@ -8,10 +8,10 @@ var path = require('path');
 var assert = require('assert');
 
 describe('store lib', function () {
-  var dir = path.normalize('tmp');
+  var dir = path.normalize('state-tmp');
   var stateFile = path.join(dir, 'state.json');
 
-  store = store.init(dir);
+  store.init(dir);
 
   it('should create directory and app state file on init', function () {
     assert.equal(true, fs.existsSync(dir));

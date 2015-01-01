@@ -4,6 +4,7 @@
 
 var util = require('./util');
 var path = require('path');
+var fs = require('fs');
 
 
 /**
@@ -48,7 +49,7 @@ var collection = function (name) {
     add : function (items) {
       if(typeof items == 'undefined') return;
 
-      if(Array.isArray(items)) {
+      if(Array.isArray(items) && items.length) {
         _data = _data.concat(items);
       } else {
         _data.push(items);
@@ -76,6 +77,18 @@ module.exports = {
 
     this.state = util.read(this.stateFile, true);
     return this;
+  },
+
+  /**
+   * For testing purposes only!
+   */
+  destroy : function () {
+    fs.unlinkSync(this.stateFile);
+    fs.rmdirSync(this.dir);
+    this.dir = null;
+    this.stateFile = null;
+    this._collections = null;
+    this.state = null;
   },
 
   getState : function () {
@@ -141,7 +154,23 @@ module.exports = {
     var cols = this.getCollections(names);
     for(var i = 0; i < cols.length; i++) {
       var found = cols[i].find(queryFun);
-      if(typeof found !== 'undefined') return cols[i].name;
+      if(found && found.length) return cols[i].name;
+    }
+  },
+
+  /**
+   * The same as getCollectionName, but adds item
+   *
+   * Will be removed in the future!
+   */
+  getCollectionNameAndItem : function (names, queryFun) {
+    var cols = this.getCollections(names);
+    for(var i = 0; i < cols.length; i++) {
+      var found = cols[i].find(queryFun);
+      if(found && found.length) return {
+          name : cols[i].name,
+          item : found[0]
+      };
     }
   }
 

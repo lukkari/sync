@@ -1,7 +1,8 @@
 /**
  * Test migrate lib
  */
-var migrate = require('../libs/migrate');
+var store = require('../libs/store');
+var migrate = require('../libs/migrate')(store);
 
 var assert = require('assert');
 var fs = require('fs');
@@ -11,7 +12,7 @@ describe('migrate lib', function () {
 
   var baseDir = path.resolve(__dirname + '/../');
 
-  var tmpDir = path.join(baseDir, 'tmp');
+  var tmpDir = path.join(baseDir, 'migrate-tmp');
   var mimosaFile = 'mimosa.mxt';
   var mimosaData = [
     '[Test]',
@@ -30,9 +31,27 @@ describe('migrate lib', function () {
   ];
   mimosaData = mimosaData.join('\n');
 
+  var groupsData = [
+    { code : '0ATRK12', name : 'ALIIBK12' },
+    { code : 'NBIOTS12W', name : 'NBIOTS12W' }
+  ];
+  var teachersData = [
+    { code : 'ANTMA', name : 'Marita Antikainen' },
+    { code : 'LEHRA', name : 'Raimo Lehto' }
+  ];
+  var roomsData = [
+    { code : 'B155(18)', name : 'B155 TIKO (18)' },
+    { code : 'B213FM(X)', name : 'B213 FM' }
+  ];
+
   before(function () {
     fs.mkdirSync(tmpDir);
     fs.writeFileSync(path.join(tmpDir, mimosaFile), mimosaData);
+
+    store.init(tmpDir);
+    store.addCollection('groups').add(groupsData);
+    store.addCollection('teachers').add(teachersData);
+    store.addCollection('rooms').add(roomsData);
   });
 
   it('do nothing for empty array', function () {
@@ -167,7 +186,9 @@ describe('migrate lib', function () {
 
   after(function () {
     fs.unlinkSync(path.join(tmpDir, mimosaFile));
-    fs.rmdirSync(tmpDir);
+    store.destroy();
+    // Store destroys directory
+    //fs.rmdirSync(tmpDir);
   });
 
 });
