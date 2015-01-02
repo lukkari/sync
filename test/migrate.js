@@ -32,16 +32,16 @@ describe('migrate lib', function () {
   mimosaData = mimosaData.join('\n');
 
   var groupsData = [
-    { code : '0ATRK12', name : 'ALIIBK12' },
-    { code : 'NBIOTS12W', name : 'NBIOTS12W' }
+    { code : '0ATRK12', name : 'ALIIBK12', _id : '1' },
+    { code : 'NBIOTS12W', name : 'NBIOTS12W', _id : '2' }
   ];
   var teachersData = [
-    { code : 'ANTMA', name : 'Marita Antikainen' },
-    { code : 'LEHRA', name : 'Raimo Lehto' }
+    { code : 'ANTMA', name : 'Marita Antikainen', _id : '1' },
+    { code : 'LEHRA', name : 'Raimo Lehto', _id : '2' }
   ];
   var roomsData = [
-    { code : 'B155(18)', name : 'B155 TIKO (18)' },
-    { code : 'B213FM(X)', name : 'B213 FM' }
+    { code : 'B155(18)', name : 'B155 TIKO (18)', _id : '1' },
+    { code : 'B213FM(X)', name : 'B213 FM', _id : '2' }
   ];
 
   before(function () {
@@ -139,7 +139,7 @@ describe('migrate lib', function () {
       }
     };
 
-    assert.deepEqual(out, migrate.processItem(input));
+    assert.deepEqual(out, migrate.processItem(input, true));
   });
 
   it('should process old item', function () {
@@ -162,7 +162,7 @@ describe('migrate lib', function () {
       }
     };
 
-    assert.deepEqual(out, migrate.processOldItem(input));
+    assert.deepEqual(out, migrate.processOldItem(input, true));
   });
 
   it('should get componentdata', function () {
