@@ -130,7 +130,9 @@ module.exports = {
    */
   getCollections : function (names) {
     var self = this;
-    return names.map(function (name) { return self.getCollection(name); });
+    return names
+      .map(function (name) { return self.getCollection(name); })
+      .filter(function (item) { return typeof item !== 'undefined'; });
   },
 
   /**
