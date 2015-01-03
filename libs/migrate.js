@@ -68,7 +68,7 @@ var migrate = function (store) {
      *   - Find codes in each
      *   - Return new object with categories
      */
-    processItem : function (item, isHuman) {
+    processItem : function (item) {
       var entry = {
         date : {
           start : item.date_start,
@@ -89,8 +89,7 @@ var migrate = function (store) {
       codes.forEach(function (code) {
         var obj = getCatNameAndItem(code.code);
         if(obj) {
-          if(isHuman) entry[obj.name].push(obj.item.name);
-          else entry[obj.name].push(obj.item._id);
+          entry[obj.name].push(obj.item._id);
         }
       });
 
@@ -104,7 +103,7 @@ var migrate = function (store) {
      *   - Find codes in each
      *   - Return new object with categories
      */
-    processOldItem : function (item, isHuman) {
+    processOldItem : function (item) {
       var entry = {
         date : {
           start : item.date_start,
@@ -126,8 +125,7 @@ var migrate = function (store) {
       codes.forEach(function (code) {
         var obj = getCatNameAndItem(code);
         if(obj) {
-          if(isHuman) entry[obj.name].push(obj.item.name);
-          else entry[obj.name].push(obj.item._id);
+          entry[obj.name].push(obj.item._id);
         }
       });
 

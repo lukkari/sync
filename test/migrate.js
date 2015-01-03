@@ -32,16 +32,16 @@ describe('migrate lib', function () {
   mimosaData = mimosaData.join('\n');
 
   var groupsData = [
-    { code : '0ATRK12', name : 'ALIIBK12', _id : '1' },
-    { code : 'NBIOTS12W', name : 'NBIOTS12W', _id : '2' }
+    { code : '0ATRK12', name : 'ALIIBK12', _id : 'g1' },
+    { code : 'NBIOTS12W', name : 'NBIOTS12W', _id : 'g2' }
   ];
   var teachersData = [
-    { code : 'ANTMA', name : 'Marita Antikainen', _id : '1' },
-    { code : 'LEHRA', name : 'Raimo Lehto', _id : '2' }
+    { code : 'ANTMA', name : 'Marita Antikainen', _id : 't1' },
+    { code : 'LEHRA', name : 'Raimo Lehto', _id : 't2' }
   ];
   var roomsData = [
-    { code : 'B155(18)', name : 'B155 TIKO (18)', _id : '1' },
-    { code : 'B213FM(X)', name : 'B213 FM', _id : '2' }
+    { code : 'B155(18)', name : 'B155 TIKO (18)', _id : 'r1' },
+    { code : 'B213FM(X)', name : 'B213 FM', _id : 'r2' }
   ];
 
   before(function () {
@@ -130,9 +130,9 @@ describe('migrate lib', function () {
 
     var out = {
       subject : 'Entrepreneurship',
-      rooms : ['B213 FM'],
-      teachers : ['Raimo Lehto'],
-      groups : ['NBIOTS12W'],
+      rooms : ['r2'],
+      teachers : ['t2'],
+      groups : ['g2'],
       date : {
         start : '2014-10-11T07:00:00.000Z',
         end : '2014-10-11T07:45:00.000Z'
@@ -153,16 +153,16 @@ describe('migrate lib', function () {
 
     var out = {
       subject : 'Entrepreneurship',
-      rooms : ['B155 TIKO (18)'],
-      teachers : ['Marita Antikainen'],
-      groups : ['ALIIBK12'],
+      rooms : ['r1'],
+      teachers : ['t1'],
+      groups : ['g1'],
       date : {
         start : '2014-10-11T07:00:00.000Z',
         end : '2014-10-11T07:45:00.000Z'
       }
     };
 
-    assert.deepEqual(out, migrate.processOldItem(input, true));
+    assert.deepEqual(out, migrate.processOldItem(input));
   });
 
   it('should get componentdata', function () {
