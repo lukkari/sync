@@ -121,7 +121,7 @@ describe('migrate lib', function () {
 
   it('should process item', function () {
     var input = {
-      subject : '[NBIOTS12W:NBIOTS12W] Entrepreneurship',
+      subject : '[NBIOTS12W:NBIOTS12W] 100532B Entrepreneurship',
       location: 'B213FM(X):B213 FM',
       description: 'NBIOTS12W:NBIOTS12W LEHRA:Raimo Lehto',
       date_start: '2014-10-11T07:00:00.000Z',
@@ -129,7 +129,10 @@ describe('migrate lib', function () {
     };
 
     var out = {
-      subject : 'Entrepreneurship',
+      subject : {
+        name : 'Entrepreneurship',
+        code : '100532B'
+      },
       rooms : ['r2'],
       teachers : ['t2'],
       groups : ['g2'],
@@ -152,7 +155,10 @@ describe('migrate lib', function () {
     };
 
     var out = {
-      subject : 'Entrepreneurship',
+      subject : {
+        name : 'Entrepreneurship',
+        code : ''
+      },
       rooms : ['r1'],
       teachers : ['t1'],
       groups : ['g1'],

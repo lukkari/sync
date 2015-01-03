@@ -76,7 +76,20 @@ var migrate = function (store) {
         }
       };
 
-      entry.subject = item.subject.replace(/\[.*\]/, '').trim();
+      var subject = item.subject.replace(/\[.*\]/, '').trim();
+      var subjectCode = subject.match(/^(\d+\w*)/);
+
+      if(subjectCode && subjectCode.length) {
+        subjectCode = subjectCode[0];
+        subject = subject.substr(subjectCode.length).trim();
+      } else {
+        subjectCode = '';
+      }
+
+      entry.subject = {
+        name : subject,
+        code : subjectCode
+      };
 
       var categories = ['groups', 'teachers', 'rooms'];
       categories.forEach(function (cat) {
@@ -111,7 +124,20 @@ var migrate = function (store) {
         }
       };
 
-      entry.subject = item.subject.replace(/\[.*\]/, '').trim();
+      var subject = item.subject.replace(/\[.*\]/, '').trim();
+      var subjectCode = subject.match(/^(\d+\w*)/);
+
+      if(subjectCode && subjectCode.length) {
+        subjectCode = subjectCode[0];
+        subject = subject.substr(subjectCode.length).trim();
+      } else {
+        subjectCode = '';
+      }
+
+      entry.subject = {
+        name : subject,
+        code : subjectCode
+      };
 
       var categories = ['groups', 'teachers', 'rooms'];
       categories.forEach(function (cat) {
