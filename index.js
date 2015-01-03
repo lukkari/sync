@@ -14,12 +14,13 @@ var ipc = require('ipc');
 // App libs
 var util = require('./libs/util');
 var store = require('./libs/store');
-var watcher = require('./libs/watcher');
 var csv = require('csv-parse');
 var fs = require('fs');
-var migrate = require('./libs/migrate');
+var migrate = require('./libs/migrate')(store);
 var io = require('socket.io-client');
 var request = require('request');
+var chokidar = require('chokidar');
+var watcher;
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
@@ -41,7 +42,7 @@ app.on('window-all-closed', function () {
 });
 
 app.on('quit', function () {
-  watcher.unwatch();
+  if(watcher) watcher.close();
 });
 
 app.on('ready', function () {
@@ -89,12 +90,15 @@ app.on('ready', function () {
   categoryNames.forEach(function (cat) {
     // Form category api url
     var catUrl = apiUrl + cat;
-    request(catUrl, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
+    request(catUrl, function (err, response, body) {
+      if(err) console.log(err);
+
+      if (!err && response.statusCode == 200) {
         // TO DO: handle bad data (not json)
         var cats = JSON.parse(body);
         var collection = store.addCollection(cat);
         collection.add(cats);
+        console.log(collection.name);
       }
     });
   });
@@ -139,18 +143,15 @@ var hideWindow = function () {
 };
 
 var startWatching = function (dir) {
-  console.log('start watching');
 
-  watcher.watch(dir,
-    {
-      types : ['csv'],
-      event : 'change',
-      hidden : false
-    },
-    function (err, file) {
-      if(err) return console.log(err);
+  // TO DO: Include ignored files: hidden, ...
+  var watcher = chokidar.watch(dir);
 
-      fs.readFile(file, function (err, data) {
+  watcher
+    .on('add', function (path) { console.log(path, 'was added'); })
+    .on('change', function (path) {
+      console.log(path, 'was changed');
+      fs.readFile(path, function (err, data) {
         if(err) return console.log(err);
 
         csv(data, { delimiter: ',' }, function (err, output) {
@@ -158,6 +159,7 @@ var startWatching = function (dir) {
 
           var data = migrate.fromArray(output);
           data = data.map(migrate.processOldItem);
+          console.log('Entries: ', data.length);
           // Process data to the server
           socket.emit('new_version');
           socket.on('start_update', function (res) {
@@ -169,8 +171,9 @@ var startWatching = function (dir) {
           });
         });
       });
-    }
-  );
+    })
+    .on('ready', function () { console.log('start watching'); })
+    .on('error', function (err) { console.log(err); });
 };
 
 var trayMenuTemplate = [
