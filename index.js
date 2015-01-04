@@ -75,7 +75,7 @@ app.on('ready', function () {
       .componentsFromMimosa(file)
       .map(migrate.processComponent)
       .filter(function (item) { return item.category != 'other'; })
-      .map(function (item) { item.filter = filter; return item; });
+      .map(function (item) { item.data.filter = filter; return item; });
 
     components.forEach(function (component) {
        var action = 'add_' + component.category;
