@@ -29,7 +29,7 @@ require('crash-reporter').start(config.crashReporter);
  * Current app state variables
  */
 var state = null;
-var categoryNames = ['groups', 'teachers', 'rooms'];
+var categoryNames = ['groups', 'teachers', 'rooms', 'filters'];
 var socket;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
@@ -48,15 +48,16 @@ app.on('quit', function () {
 app.on('ready', function () {
 
   // Init storage
-  store = store.init(app.getDataPath(), config.stateObj);
+  store.init(app.getDataPath(), config.stateObj);
   state = store.getState();
 
   // Init sockets
   socket = setUpSockets();
 
   // If watching dir is not specified, try to set it up
-  if(!util.exists(state.watchDir)) openWindow();
-  else startWatching(state.watchDir);
+  // if(!util.exists(state.watchDir)) openWindow();
+  // else startWatching(state.watchDir);
+  openWindow();
 
   ipc.on('watchdir', function (e, dir) {
     state.watchDir = dir;
@@ -64,11 +65,17 @@ app.on('ready', function () {
     startWatching(dir);
   });
 
-  ipc.on('mimosafile', function (e, file) {
+  ipc.on('mimosafile', function (e, data) {
+    var filter = data.filter;
+    var file = data.file;
+
+    // var { filter, file } = data;
+
     var components = migrate
       .componentsFromMimosa(file)
       .map(migrate.processComponent)
-      .filter(function (item) { return item.category != 'other'; });
+      .filter(function (item) { return item.category != 'other'; })
+      .map(function (item) { item.filter = filter; return item; });
 
     components.forEach(function (component) {
        var action = 'add_' + component.category;
@@ -76,29 +83,31 @@ app.on('ready', function () {
     });
   });
 
+  // TODO: get baseUrl from user settings
+  var apiUrl = config.baseUrl + '/api/';
+
   // Listen to all categories
-  categoryNames.forEach(function (name) {
-    var action = name + '_added';
+  categoryNames.forEach(function (cat) {
+    var action = cat + '_added';
     socket.on(action, function (item) {
       // Add new item to category collection
-      store.getCollection(name).add(item);
+      store.getCollection(cat).add(item);
     });
-  });
 
-  // Load categories
-  var apiUrl = config.baseUrl + '/api/';
-  categoryNames.forEach(function (cat) {
     // Form category api url
     var catUrl = apiUrl + cat;
     request(catUrl, function (err, response, body) {
       if(err) console.log(err);
 
       if (!err && response.statusCode == 200) {
-        // TO DO: handle bad data (not json)
+        // TODO: handle bad data (not json)
         var cats = JSON.parse(body);
         var collection = store.addCollection(cat);
         collection.add(cats);
-        console.log(collection.name);
+        console.log('Load:', collection.name);
+        if(collection.name == 'filters' && win) {
+          win.webContents.send('update_filters', collection.all);
+        }
       }
     });
   });
@@ -128,6 +137,11 @@ var openWindow = function () {
 
   win.webContents.on('did-finish-load', function () {
     win.webContents.send('state', state);
+
+    var col = store.getCollection('filters');
+    // If no filters fetched return
+    if(!col) return;
+    win.webContents.send('update_filters', col.all);
   });
 
   win.on('closed', function () {
@@ -144,7 +158,7 @@ var hideWindow = function () {
 
 var startWatching = function (dir) {
 
-  // TO DO: Include ignored files: hidden, ...
+  // TODO: Include ignored files: hidden, ...
   var watcher = chokidar.watch(dir);
 
   watcher

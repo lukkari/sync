@@ -34,9 +34,18 @@
         </section>
 
         <h2>Select Mimosa text file</h2>
-        <section>
+        <section id='mimosaCont'>
           <div>
-            <input type='file' id='mimosaFile' />
+            <input type='file' class='mimosaFile' />
+            <select class='filterSelect'></select>
+          </div>
+          <div>
+            <input type='file' class='mimosaFile' />
+            <select class='filterSelect'></select>
+          </div>
+          <div>
+            <input type='file' class='mimosaFile' />
+            <select class='filterSelect'></select>
           </div>
         </section>
 
@@ -51,7 +60,9 @@
 
       var dir = document.querySelector('#dir');
       var selected = document.querySelector('#selected');
-      var mimosaFile = document.querySelector('#mimosaFile');
+      //var mimosaFile = document.querySelector('#mimosaFile');
+      var mimosaFiles = document.querySelectorAll('#mimosaCont input');
+      var filterSelects = document.querySelectorAll('#mimosaCont select');
 
       dir.addEventListener('change', function (e) {
         if(!e.target.files.length) return;
@@ -61,16 +72,42 @@
         ipc.send('watchdir', e.target.files[0].path);
       }, false);
 
+      var mimosaFileHandler = function (e) {
+        if(!e.target.files.length) return;
+
+        // TODO: Get data in a better way
+        var filter = e.target.nextSibling.nextSibling.value;
+        ipc.send('mimosafile', {
+          filter : filter,
+          file : e.target.files[0].path
+        });
+      };
+
+      for(var i = 0; i < mimosaFiles.length; i += 1) {
+        mimosaFiles[i].addEventListener('change', mimosaFileHandler, false);
+      }
 
       ipc.on('state', function (state) {
         selected.innerText = state.watchDir;
       });
 
-      mimosaFile.addEventListener('change', function (e) {
-        if(!e.target.files.length) return;
+      ipc.on('update_filters', function (filters) {
+        console.log(filters);
+        updateFilters(filters);
+      });
 
-        ipc.send('mimosafile', e.target.files[0].path);
-      }, false);
+      function updateFilters(filters) {
+        var filterNode;
+        if(!filters) return;
+
+        for(var i = 0; i < filterSelects.length; i += 1) {
+          filterNode = filterSelects[i];
+          filterNode.innerHTML = '';
+          filters.forEach(function (filter) {
+            filterNode.innerHTML += '<option val="' + filter._id + '">' + filter.name + '</option>';
+          });
+        }
+      }
     };
     </script>
   </body>
