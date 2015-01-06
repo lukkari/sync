@@ -23,13 +23,20 @@
           </div>
         </section>
 
-        <h2>Folder to sync</h2>
+        <h2>Folder to sync (don't use)</h2>
         <section>
           <div>
             Selected folder: <code id='selected'></code>
           </div>
           <div>
             <input type='file' id='dir' webkitdirectory directory multiple />
+          </div>
+        </section>
+
+        <h2>Select schedule file</h2>
+        <section>
+          <div>
+            <input type='file' id='scheduleFile' />
           </div>
         </section>
 
@@ -60,9 +67,9 @@
 
       var dir = document.querySelector('#dir');
       var selected = document.querySelector('#selected');
-      //var mimosaFile = document.querySelector('#mimosaFile');
       var mimosaFiles = document.querySelectorAll('#mimosaCont input');
       var filterSelects = document.querySelectorAll('#mimosaCont select');
+      var scheduleFile = document.querySelector('#scheduleFile');
 
       dir.addEventListener('change', function (e) {
         if(!e.target.files.length) return;
@@ -92,7 +99,6 @@
       });
 
       ipc.on('update_filters', function (filters) {
-        console.log(filters);
         updateFilters(filters);
       });
 
@@ -108,6 +114,11 @@
           });
         }
       }
+
+      scheduleFile.addEventListener('change', function (e) {
+        if(!e.target.files.length) return;
+        ipc.send('schedulefile', e.target.files[0].path);
+      }, false);
     };
     </script>
   </body>

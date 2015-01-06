@@ -16,6 +16,7 @@ var util = require('./libs/util');
 var store = require('./libs/store');
 var csv = require('csv-parse');
 var fs = require('fs');
+var path = require('path');
 var migrate = require('./libs/migrate')(store);
 var io = require('socket.io-client');
 var request = require('request');
@@ -63,6 +64,11 @@ app.on('ready', function () {
     state.watchDir = dir;
     store.setState(state);
     startWatching(dir);
+  });
+
+  ipc.on('schedulefile', function (e, dir) {
+    if(path.extname(dir) !== '.csv') return;
+    parseCsvFromFile(dir);
   });
 
   ipc.on('mimosafile', function (e, data) {
@@ -162,33 +168,35 @@ var startWatching = function (dir) {
   var watcher = chokidar.watch(dir);
 
   watcher
-    .on('add', function (path) { console.log(path, 'was added'); })
-    .on('change', function (path) {
-      console.log(path, 'was changed');
-      fs.readFile(path, function (err, data) {
-        if(err) return console.log(err);
-
-        csv(data, { delimiter: ',' }, function (err, output) {
-          if(err) return console.log(err);
-
-          var data = migrate.fromArray(output);
-          data = data.map(migrate.processOldItem);
-          console.log('Entries: ', data.length);
-          // Process data to the server
-          socket.emit('new_version');
-          socket.on('start_update', function (res) {
-            var v = res.version || 0;
-            data.forEach(function (item) {
-              item.version = v;
-              socket.emit('add_entry', item);
-            });
-          });
-        });
-      });
-    })
+    .on('add', function (dir) { console.log(dir, 'was added'); })
+    .on('change', parseCsvFromFile)
     .on('ready', function () { console.log('start watching'); })
     .on('error', function (err) { console.log(err); });
 };
+
+function parseCsvFromFile(dir) {
+  console.log('Parse csv from: ', dir);
+
+  var content = util.decode(util.rawRead(dir), 'ISO-8859-1');
+  csv(content, { delimiter: ',' }, handleScheduleData);
+}
+
+function handleScheduleData(err, output) {
+  if(err) return console.log(err);
+
+  var data = migrate.fromArray(output);
+  data = data.map(migrate.processOldItem);
+  console.log('Entries: ', data.length);
+  // Process data to the server
+  socket.emit('new_version');
+  socket.on('start_update', function (res) {
+    var v = res.version || 0;
+    data.forEach(function (item) {
+      item.version = v;
+      socket.emit('add_entry', item);
+    });
+  });
+}
 
 var trayMenuTemplate = [
   {
