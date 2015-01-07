@@ -192,7 +192,12 @@ function parseCsvFromFile(dir, filter) {
 function handleScheduleData(output, filter) {
   var data = migrate
     .fromArray(output)
-    .map(migrate.processOldItem)
+    .map(migrate.processOldItem);
+    
+  console.log('Before: ', data.length);
+
+  data = util
+    .unique(data)
     .map(function (entry) { entry.filter = filter; return entry; });
 
   console.log('Entries: ', data.length);
