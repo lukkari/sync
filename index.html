@@ -33,26 +33,53 @@
           </div>
         </section>
 
-        <h2>Select schedule file</h2>
-        <section>
-          <div>
-            <input type='file' id='scheduleFile' />
-          </div>
-        </section>
-
-        <h2>Select Mimosa text file</h2>
+        <h2>Select schedule data</h2>
         <section id='mimosaCont'>
           <div>
-            <input type='file' class='mimosaFile' />
-            <select class='filterSelect'></select>
+            <div>
+              <b>Timetables:</b>
+              <input type='file' class='timetable-file' />
+            </div>
+            <div>
+              <b>Mimosa file:</b>
+              <input type='file' class='mimosa-file' />
+            </div>
+            <div>
+              <b>Filter</b>
+              <select class='filter-select'></select>
+            </div>
           </div>
+          <hr />
+
           <div>
-            <input type='file' class='mimosaFile' />
-            <select class='filterSelect'></select>
+            <div>
+              <b>Timetables:</b>
+              <input type='file' class='timetable-file' />
+            </div>
+            <div>
+              <b>Mimosa file:</b>
+              <input type='file' class='mimosa-file' />
+            </div>
+            <div>
+              <b>Filter</b>
+              <select class='filter-select'></select>
+            </div>
           </div>
+          <hr />
+
           <div>
-            <input type='file' class='mimosaFile' />
-            <select class='filterSelect'></select>
+            <div>
+              <b>Timetables:</b>
+              <input type='file' class='timetable-file' />
+            </div>
+            <div>
+              <b>Mimosa file:</b>
+              <input type='file' class='mimosa-file' />
+            </div>
+            <div>
+              <b>Filter</b>
+              <select class='filter-select'></select>
+            </div>
           </div>
         </section>
 
@@ -67,9 +94,10 @@
 
       var dir = document.querySelector('#dir');
       var selected = document.querySelector('#selected');
-      var mimosaFiles = document.querySelectorAll('#mimosaCont input');
-      var filterSelects = document.querySelectorAll('#mimosaCont select');
-      var scheduleFile = document.querySelector('#scheduleFile');
+
+      var timetableFiles = document.querySelectorAll('#mimosaCont .timetable-file');
+      var mimosaFiles = document.querySelectorAll('#mimosaCont .mimosa-file');
+      var filterSelects = document.querySelectorAll('#mimosaCont .filter-select');
 
       dir.addEventListener('change', function (e) {
         if(!e.target.files.length) return;
@@ -79,18 +107,33 @@
         ipc.send('watchdir', e.target.files[0].path);
       }, false);
 
-      var mimosaFileHandler = function (e) {
+      function mimosaFileHandler(e) {
         if(!e.target.files.length) return;
 
-        // TODO: Get data in a better way
-        var filter = e.target.nextSibling.nextSibling.value;
+        var filter = e.target.parentNode.parentNode.querySelector('.filter-select').value;
         ipc.send('mimosafile', {
           filter : filter,
           file : e.target.files[0].path
         });
-      };
+      }
 
-      for(var i = 0; i < mimosaFiles.length; i += 1) {
+      function timetableFileHandler(e) {
+        if(!e.target.files.length) return;
+
+        var filter = e.target.parentNode.parentNode.querySelector('.filter-select').value;
+        ipc.send('schedulefile', {
+          file : e.target.files[0].path,
+          filter : filter
+        });
+      }
+
+      var i;
+
+      for(i = 0; i < timetableFiles.length; i += 1) {
+        timetableFiles[i].addEventListener('change', timetableFileHandler, false);
+      }
+
+      for(i = 0; i < mimosaFiles.length; i += 1) {
         mimosaFiles[i].addEventListener('change', mimosaFileHandler, false);
       }
 
@@ -115,10 +158,10 @@
         }
       }
 
-      scheduleFile.addEventListener('change', function (e) {
-        if(!e.target.files.length) return;
-        ipc.send('schedulefile', e.target.files[0].path);
-      }, false);
+      // scheduleFile.addEventListener('change', function (e) {
+      //   if(!e.target.files.length) return;
+      //   ipc.send('schedulefile', e.target.files[0].path);
+      // }, false);
     };
     </script>
   </body>

@@ -66,9 +66,14 @@ app.on('ready', function () {
     startWatching(dir);
   });
 
-  ipc.on('schedulefile', function (e, dir) {
-    if(path.extname(dir) !== '.csv') return;
-    parseCsvFromFile(dir);
+  ipc.on('schedulefile', function (e, params) {
+    var file = params.file;
+    var filter = params.filter;
+
+    if(path.extname(file) !== '.csv') return;
+    if(!filter.length) return;
+
+    parseCsvFromFile(file, filter);
   });
 
   ipc.on('mimosafile', function (e, data) {
@@ -174,27 +179,31 @@ var startWatching = function (dir) {
     .on('error', function (err) { console.log(err); });
 };
 
-function parseCsvFromFile(dir) {
+function parseCsvFromFile(dir, filter) {
   console.log('Parse csv from: ', dir);
 
   var content = util.decode(util.rawRead(dir), 'ISO-8859-1');
-  csv(content, { delimiter: ',' }, handleScheduleData);
+  csv(content, { delimiter: ',' }, function (err, output) {
+    if(err) return console.log(err);
+    handleScheduleData(output, filter);
+  });
 }
 
-function handleScheduleData(err, output) {
-  if(err) return console.log(err);
+function handleScheduleData(output, filter) {
+  var data = migrate
+    .fromArray(output)
+    .map(migrate.processOldItem)
+    .map(function (entry) { entry.filter = filter; return entry; });
 
-  var data = migrate.fromArray(output);
-  data = data.map(migrate.processOldItem);
   console.log('Entries: ', data.length);
+  console.log('Filter:', filter);
   // Process data to the server
-  socket.emit('new_version');
-  socket.on('start_update', function (res) {
-    var v = res.version || 0;
+  socket.emit('new_version', filter, function () {
+    console.log('Push entries');
     data.forEach(function (item) {
-      item.version = v;
       socket.emit('add_entry', item);
     });
+    // socket.emit('add_entries', data);
   });
 }
 
@@ -242,7 +251,7 @@ var trayMenuTemplate = [
 ];
 
 function setUpSockets() {
-  var manage = io.connect('http://localhost:3000/manage', { query : 'token=Roman' });
+  var manage = io.connect(config.baseUrl + 'manage', { query : 'token=Roman' });
 
   manage
     .on('connect', function () {
