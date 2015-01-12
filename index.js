@@ -193,7 +193,7 @@ function handleScheduleData(output, filter) {
   var data = migrate
     .fromArray(output)
     .map(migrate.processOldItem);
-    
+
   console.log('Before: ', data.length);
 
   data = util
@@ -205,11 +205,26 @@ function handleScheduleData(output, filter) {
   // Process data to the server
   socket.emit('new_version', filter, function () {
     console.log('Push entries');
-    data.forEach(function (item) {
-      socket.emit('add_entry', item);
-    });
+    // data.forEach(function (item) {
+    //   socket.emit('add_entry', item);
+    // });
+    postSchedule(data);
     // socket.emit('add_entries', data);
   });
+}
+
+function postSchedule(data) {
+  var postUrl = config.baseUrl + 'api/entry';
+  request.post({
+      url : postUrl,
+      body : data,
+      json : true
+    }, function (err, res, body) {
+      if(err) console.log(err);
+
+      console.log(body);
+    }
+  );
 }
 
 var trayMenuTemplate = [
