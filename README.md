@@ -1,6 +1,10 @@
-# Utility for parsing calendar files
+# Parser for .csv files
 
-Lukkari parse application. Listens for file changes in the selected folder and ~~posts updated schedule to the server~~.
+Lukkari parse application running on [atom-shell](https://github.com/atom/atom-shell). Select calendar files and post schedule entries to the server.
+
+## Prerequisites
+
+[Lukkari server](https://github.com/zaynetro/lukkari) should be up and running.
 
 ## TODO
 
@@ -12,4 +16,8 @@ Lukkari parse application. Listens for file changes in the selected folder and ~
 - [ ] Store parsed data in log
 - [ ] Show log in browserWindow
 - [x] Show saved watch dir in browserWindow
-- [ ] Think of handling abbreviations in schedule files
+- [x] Think of handling abbreviations in schedule files
+
+### License
+
+MIT

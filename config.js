@@ -28,5 +28,7 @@ module.exports = {
 
   stateObj : {
     watchDir : null
-  }
+  },
+
+  baseUrl : 'http://localhost:3000/'
 };

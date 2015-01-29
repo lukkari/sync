@@ -3,8 +3,9 @@
  */
 
 var fs = require('fs');
+var iconv = require('iconv-lite');
 
-module.exports = {
+var util = module.exports = {
 
   exists : function (dir) {
     return fs.existsSync(dir);
@@ -23,8 +24,12 @@ module.exports = {
     });
   },
 
-  read : function (dir) {
-    return this.restore(fs.readFileSync(dir));
+  read : function (dir, isJSON) {
+    return (
+      isJSON
+        ? this.restore(fs.readFileSync(dir))
+        : fs.readFileSync(dir, { encoding : 'utf-8' })
+    );
   },
 
   ensureDir : function (dir) {
@@ -43,6 +48,46 @@ module.exports = {
 
   restore : function (data) {
     return JSON.parse(data);
+  },
+
+  decode : function (data, from) {
+    return iconv.decode(data, from);
+  },
+
+  rawRead : function (dir) {
+    return fs.readFileSync(dir);
+  },
+
+  /**
+   * Return array with unique items
+   */
+  unique : function (a) {
+    var out = [];
+    var seen = {};
+
+    for(var i = 0; i < a.length; i += 1) {
+      var key = JSON.stringify(a[i]);
+      var item = a[i];
+      if(!seen.hasOwnProperty(key)) {
+        seen[key] = item;
+        out.push(item);
+      }
+    }
+
+    return out;
+  },
+
+  /**
+   * Wrap function to output execution time
+   */
+  withTime : function (f) {
+    return function () {
+      var start = new Date().getTime();
+      var res = f.apply(null, arguments);
+      var end = new Date().getTime();
+      console.log('Time spent: ', (end - start) / 1000 + 's');
+      return res;
+    };
   }
 
 };

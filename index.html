@@ -23,13 +23,63 @@
           </div>
         </section>
 
-        <h2>Folder to sync</h2>
+        <h2>Folder to sync (don't use)</h2>
         <section>
           <div>
             Selected folder: <code id='selected'></code>
           </div>
           <div>
             <input type='file' id='dir' webkitdirectory directory multiple />
+          </div>
+        </section>
+
+        <h2>Select schedule data</h2>
+        <section id='mimosaCont'>
+          <div>
+            <div>
+              <b>Timetables:</b>
+              <input type='file' class='timetable-file' />
+            </div>
+            <div>
+              <b>Mimosa file:</b>
+              <input type='file' class='mimosa-file' />
+            </div>
+            <div>
+              <b>Filter</b>
+              <select class='filter-select'></select>
+            </div>
+          </div>
+          <hr />
+
+          <div>
+            <div>
+              <b>Timetables:</b>
+              <input type='file' class='timetable-file' />
+            </div>
+            <div>
+              <b>Mimosa file:</b>
+              <input type='file' class='mimosa-file' />
+            </div>
+            <div>
+              <b>Filter</b>
+              <select class='filter-select'></select>
+            </div>
+          </div>
+          <hr />
+
+          <div>
+            <div>
+              <b>Timetables:</b>
+              <input type='file' class='timetable-file' />
+            </div>
+            <div>
+              <b>Mimosa file:</b>
+              <input type='file' class='mimosa-file' />
+            </div>
+            <div>
+              <b>Filter</b>
+              <select class='filter-select'></select>
+            </div>
           </div>
         </section>
 
@@ -45,16 +95,73 @@
       var dir = document.querySelector('#dir');
       var selected = document.querySelector('#selected');
 
+      var timetableFiles = document.querySelectorAll('#mimosaCont .timetable-file');
+      var mimosaFiles = document.querySelectorAll('#mimosaCont .mimosa-file');
+      var filterSelects = document.querySelectorAll('#mimosaCont .filter-select');
+
       dir.addEventListener('change', function (e) {
+        if(!e.target.files.length) return;
+
         selected.innerText = e.target.files[0].path;
         // Update watchdir config
         ipc.send('watchdir', e.target.files[0].path);
-      });
+      }, false);
 
+      function mimosaFileHandler(e) {
+        if(!e.target.files.length) return;
+
+        var filter = e.target.parentNode.parentNode.querySelector('.filter-select').value;
+        ipc.send('mimosafile', {
+          filter : filter,
+          file : e.target.files[0].path
+        });
+      }
+
+      function timetableFileHandler(e) {
+        if(!e.target.files.length) return;
+
+        var filter = e.target.parentNode.parentNode.querySelector('.filter-select').value;
+        ipc.send('schedulefile', {
+          file : e.target.files[0].path,
+          filter : filter
+        });
+      }
+
+      var i;
+
+      for(i = 0; i < timetableFiles.length; i += 1) {
+        timetableFiles[i].addEventListener('change', timetableFileHandler, false);
+      }
+
+      for(i = 0; i < mimosaFiles.length; i += 1) {
+        mimosaFiles[i].addEventListener('change', mimosaFileHandler, false);
+      }
 
       ipc.on('state', function (state) {
         selected.innerText = state.watchDir;
       });
+
+      ipc.on('update_filters', function (filters) {
+        updateFilters(filters);
+      });
+
+      function updateFilters(filters) {
+        var filterNode;
+        if(!filters) return;
+
+        for(var i = 0; i < filterSelects.length; i += 1) {
+          filterNode = filterSelects[i];
+          filterNode.innerHTML = '';
+          filters.forEach(function (filter) {
+            filterNode.innerHTML += '<option value="' + filter._id + '">' + filter.name + '</option>';
+          });
+        }
+      }
+
+      // scheduleFile.addEventListener('change', function (e) {
+      //   if(!e.target.files.length) return;
+      //   ipc.send('schedulefile', e.target.files[0].path);
+      // }, false);
     };
     </script>
   </body>
