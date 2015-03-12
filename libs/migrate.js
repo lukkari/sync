@@ -58,16 +58,21 @@ var migrate = function (store) {
 
       for(i = 1; i < data.length; i++) {
         el = data[i];
-        d_start = Date.parse(resolveDate(el[1]) + ' ' + el[2]);
-        d_end = Date.parse(resolveDate(el[3]) + ' ' + el[4]);
-        item = {
-          subject: el[0],
-          location: el[6],
-          description: el[5],
-          date_start: new Date(d_start).toISOString(),
-          date_end: new Date(d_end).toISOString()
-        };
-        out.push(item);
+        if(!el[1] || !el[2] || !el[3] || !el[4]) {
+          // If no data fields, don't push
+          console.log(el);
+        } else {
+          d_start = Date.parse(resolveDate(el[1]) + ' ' + el[2]);
+          d_end = Date.parse(resolveDate(el[3]) + ' ' + el[4]);
+          item = {
+            subject: el[0],
+            location: el[6],
+            description: el[5],
+            date_start: new Date(d_start).toISOString(),
+            date_end: new Date(d_end).toISOString()
+          };
+          out.push(item);
+        }
       }
 
       return out;
