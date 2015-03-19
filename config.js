@@ -6,9 +6,9 @@ module.exports = {
 
   // BrowserWindow options
   browserWindow : {
-    width : (process.env.DEBUG == 'true') ? 1000 : 400, // Provide space for debugger tools
-    height : 600,
-    title : 'Hello world',
+    width : (process.env.DEBUG == 'true') ? 1000 : 500, // Provide space for debugger tools
+    height : (process.env.DEBUG == 'true') ? 700 : 320,
+    title : 'Lukkari sync',
     center : true
   },
 
@@ -30,5 +30,5 @@ module.exports = {
     watchDir : null
   },
 
-  baseUrl : 'http://localhost:3000/'
+  baseUrl : 'http://lukkari.dc.turkuamk.fi/'
 };
