@@ -27,6 +27,8 @@ module.exports = {
   }*/
 
   stateObj : {
+    baseUrl : 'http://lukkari.dc.turkuamk.fi/',
+    appToken : 'roman',
     watchDir : null
   },
 
