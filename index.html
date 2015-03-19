@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lukkari sync</title>
+    <meta charset="utf-8" />
+    <link href="lib/template.css" media="all" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="outer">
+      <header class="main-header">
+        <h1>ICT</h1>
+        <div class="main-header-settings">
+          <button class="icon-cog" id="openSettingsBtn"></button>
+        </div>
+      </header>
+      <article class="content">
+        <div class="drop-wrap">
+          <div class="drop-area">
+            <label id="dropArea">
+              <input type="file" class="drop-area-file" id="selectedFile" accept=".csv" />
+            </label>
+          </div>
+
+          <div class="drop-area-tips">
+            <h2 class="drop-area-title">Drop files here or click to select.</h2>
+            <p class="drop-area-note">
+              (Choose exported schedule files in .csv file format)
+            </p>
+          </div>
+        </div>
+
+        <div class="file-to-sync" id="fileToSync" style="display:none;">
+          Selected file: <i id="selectedFileName">image.csv</i>
+          <button id="cancelFileBtn" class="icon-close"></button>
+        </div>
+
+        <div class="sync-button">
+          <button id="syncBtn" style="display:none;">Sync</button>
+        </div>
+
+      </article>
+    </div>
+
+    <div class="overlay" id="overlay" style="display:none;"></div>
+    <div class="settings" id="settings" style="display:none;">
+      <div class="settings-title">
+        <h3>Settings</h3>
+        <div class="settings-close">
+          <button class="icon-close" id="closeSettingsBtn"></button>
+        </div>
+      </div>
+      <ul class="settings-list">
+        <li>
+          <label for="baseUrl">Server location</label>
+          <input type="text" class="text" id="baseUrl" placeholder="Your school schedule location" />
+        </li>
+        <li>
+          <label for="appToken">App token</label>
+          <input type="text" class="text" id="appToken" placeholder="Application token" />
+        </li>
+        <li>
+          <input type="checkbox" id="isFileToBeRemoved" />
+          <label for="isFileToBeRemoved">Remove selected file after syncing</label>
+        </li>
+        <li>
+          <input type="checkbox" id="isQuitApp" />
+          <label for="isQuitApp">Quit application after syncing</label>
+        </li>
+      </ul>
+    </div>
+
+    <script src="./lib/page.js" async></script>
+  </body>
+</html>
