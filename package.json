@@ -4,11 +4,10 @@
   "description": "Desktop application that syncs folder with web-version",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=true ../binaries/atom ./",
-    "prod": "../binaries/atom ./",
-    "mac": "../binaries/Atom.app/Contents/MacOS/Atom ./",
-    "debug-mac": "DEBUG=true ../binaries/Atom.app/Contents/MacOS/Atom ./",
-    "test": "mocha"
+    "debug": "DEBUG=true atom-shell ./",
+    "prod": "atom-shell ./",
+    "test": "mocha",
+    "atom-shell": "atom-shell"
   },
   "repository": {
     "type": "git",
@@ -18,6 +17,7 @@
     "url": "https://github.com/zaynetro/lukkari-sync/issues"
   },
   "devDependencies": {
+    "atom-shell": "^0.22.1",
     "mocha": "^2.0.1"
   },
   "dependencies": {
