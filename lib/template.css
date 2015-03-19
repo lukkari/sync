@@ -1,0 +1,246 @@
+@font-face {
+	font-family: 'icomoon';
+	src:url('./fonts/icomoon.eot?a7l90x');
+	src:url('./fonts/icomoon.eot?#iefixa7l90x') format('embedded-opentype'),
+		url('./fonts/icomoon.woff?a7l90x') format('woff'),
+		url('./fonts/icomoon.ttf?a7l90x') format('truetype'),
+		url('./fonts/icomoon.svg?a7l90x#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/**
+ * Colors:
+ *   - White #fff
+ *   - Blue 
+ */
+
+body {
+  padding: 0;
+  margin: 0;
+  font: 100% arial, verdana, sans-serif;
+  background-color: #fff;
+}
+
+button, 
+input, 
+select, 
+textarea {
+  box-sizing: border-box;
+  outline: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li { list-style-type: none; }
+
+[class^="icon-"], 
+[class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cog:before { content: "\e994"; }
+.icon-close:before { content: "\ea0f"; }
+
+.text {
+  font-size: 1rem;
+  padding: 0.2rem;
+}
+
+/* APP */
+.outer {
+  box-sizing: border-box;
+  padding: 1rem;
+}
+
+/* HEADER */
+.main-header {
+  position: relative;
+  padding: 0 1rem 0.5rem;
+}
+
+.main-header > h1 {
+  padding: 0;
+  margin: 0;
+}
+
+.main-header-settings {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.2rem;
+}
+
+.main-header-settings > button {
+  border: 0;
+  background: transparent;
+  padding: 0.2rem;
+  font-size: 1.5rem;
+  color: #7f8c8d;
+}
+
+/*.main-header-settings > button:hover {
+  color: #95a5a6;
+}*/
+
+.main-header-settings > button:active {
+  color: #2980b9;
+}
+
+/* File selection */
+.drop-wrap {
+  position: relative;
+  height: 5.5rem;
+  margin: 0.5rem 0;
+}
+
+.drop-area > label {
+  box-sizing: border-box;
+  display: block;
+  border: 2px solid #2980b9;
+  border-style: dashed;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  height: 5.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+}
+
+.drop-area > .hover {
+  border-style: solid;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.drop-area-tips {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+  heigth: 5rem;
+}
+
+.drop-area-title {
+  padding: 0;
+  margin: 0.7rem 0;
+}
+
+.drop-area-file {
+  visibility: hidden;
+  position: absolute;
+  bottom: 0;
+  rigth: 0;
+  height: 0;
+  width: 0;
+}
+
+.drop-area-note {
+  color: #666;
+}
+
+.file-to-sync {
+  font-size: 1.1rem;
+}
+
+.file-to-sync i {
+  font-weight: bold;
+}
+
+.file-to-sync button {
+  border: 0;
+  background: transparent;
+  font-size: 0.8rem;
+  color: #e74c3c;
+  padding: 0.2rem 0.3rem;
+}
+
+.sync-button {
+  margin-top: 0.5rem;
+}
+
+.sync-button > button {
+  width: 100%;
+  border: 0;
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+  background-color: #2ecc71;
+}
+
+.sync-button > button:active {
+  background-color: #27ae60;
+}
+
+/* SETTINGS */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+.settings {
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  width: 80%;
+  background: #fff;
+  z-index: 7;
+  margin: 0 10%;
+  box-shadow: 0 0 10px 2px #222;
+}
+
+.settings-title {
+  margin: 0;
+  padding: 0.5rem;
+  background-color: #ddd;
+  position: relative;
+}
+
+.settings-title > h3 {
+  margin: 0;
+}
+
+.settings-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.5rem;
+}
+
+.settings-close > button {
+  border: 0;
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+.settings-list {
+  margin: 0.5rem;
+}
+
+.settings-list > li {
+  margin: 0.2rem 0;
+  padding: 0.1rem 0;
+}
+
+.settings-list .fixed {
+  width: 200px;
+}
