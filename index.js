@@ -11,7 +11,7 @@ var ipc = require('ipc');
 
 // App libs
 var store = require('./libs/store');
-var sync = require('./lib/sync');
+var sync = require('./lib/sync')(app);
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
@@ -72,6 +72,6 @@ function openWindow() {
 
   win.webContents.on('did-finish-load', function () {
     // Send current app state to the page
-    win.webContents.send('state', state);
+    win.webContents.send('state', store.getState());
   });
 }
