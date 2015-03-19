@@ -12,7 +12,6 @@
 /**
  * Colors:
  *   - White #fff
- *   - Blue 
  */
 
 body {
@@ -22,9 +21,9 @@ body {
   background-color: #fff;
 }
 
-button, 
-input, 
-select, 
+button,
+input,
+select,
 textarea {
   box-sizing: border-box;
   outline: none;
@@ -37,7 +36,7 @@ ul {
 
 li { list-style-type: none; }
 
-[class^="icon-"], 
+[class^="icon-"],
 [class*=" icon-"] {
 	font-family: 'icomoon';
 	speak: none;
