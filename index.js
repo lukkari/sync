@@ -54,9 +54,18 @@ app.on('ready', function () {
 
   function loadCategoriesAndNotify() {
     sync.loadCategories(function (name, msg) {
-      if(win) {
+      if(!win) return;
+
+      if(!win.webContents.isLoading()) {
+        // When window is loaded
         win.webContents.send(name, msg);
+        return;
       }
+
+      // Otherwise finish to load
+      win.webContents.on('did-finish-load', function () {
+        win.webContents.send(name, msg);
+      });
     });
   }
 
