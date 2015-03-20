@@ -38,6 +38,13 @@ app.on('ready', function () {
 
   // Triggered when user chose a file to upload
   ipc.on('sync-file', sync.onSyncFile);
+
+  // Load categories
+  sync.loadCategories(function (name, msg) {
+    if(win) {
+      win.webContents.send(name, msg);
+    }
+  });
 });
 
 // Fired when app was hibernated
