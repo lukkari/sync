@@ -39,12 +39,28 @@ app.on('ready', function () {
   // Triggered when user chose a file to upload
   ipc.on('sync-file', sync.onSyncFile);
 
-  // Load categories
-  sync.loadCategories(function (name, msg) {
-    if(win) {
-      win.webContents.send(name, msg);
-    }
+  // When user change base url
+  ipc.on('update_baseUrl', function () {
+    var isChanged = sync.onBaseUrl.apply(null, arguments);
+    if(isChanged) loadCategoriesAndNotify();
   });
+
+  // When user changed app token
+  ipc.on('update_token', function () {
+    var isChanged = sync.onToken.apply(null, arguments);
+    // No need to update categories as they have public access now
+    // if(isChanged) loadCategoriesAndNotify();
+  });
+
+  function loadCategoriesAndNotify() {
+    sync.loadCategories(function (name, msg) {
+      if(win) {
+        win.webContents.send(name, msg);
+      }
+    });
+  }
+
+  loadCategoriesAndNotify();
 });
 
 // Fired when app was hibernated
