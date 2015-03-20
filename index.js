@@ -37,7 +37,9 @@ app.on('ready', function () {
   openWindow();
 
   // Triggered when user chose a file to upload
-  ipc.on('sync-file', sync.onSyncFile);
+  ipc.on('sync-file', function (e, conf) {
+    sync.onSyncFile(e, conf, sendToPage);
+  });
 
   // When user change base url
   ipc.on('update_baseUrl', function () {
@@ -53,20 +55,7 @@ app.on('ready', function () {
   });
 
   function loadCategoriesAndNotify() {
-    sync.loadCategories(function (name, msg) {
-      if(!win) return;
-
-      if(!win.webContents.isLoading()) {
-        // When window is loaded
-        win.webContents.send(name, msg);
-        return;
-      }
-
-      // Otherwise finish to load
-      win.webContents.on('did-finish-load', function () {
-        win.webContents.send(name, msg);
-      });
-    });
+    sync.loadCategories(sendToPage);
   }
 
   loadCategoriesAndNotify();
@@ -105,5 +94,25 @@ function openWindow() {
   win.webContents.on('did-finish-load', function () {
     // Send current app state to the page
     win.webContents.send('state', store.getState());
+  });
+}
+
+/**
+ * Sends message to the browser page
+ * @param {String} name
+ * @param {String} msg
+ */
+function sendToPage(name, msg) {
+  if(!win) return;
+
+  if(!win.webContents.isLoading()) {
+    // When window is loaded
+    win.webContents.send(name, msg);
+    return;
+  }
+
+  // Otherwise finish to load
+  win.webContents.on('did-finish-load', function () {
+    win.webContents.send(name, msg);
   });
 }
