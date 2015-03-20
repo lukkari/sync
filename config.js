@@ -1,6 +1,7 @@
 /**
  * Config file
  */
+var help = require('./lib/help');
 
 module.exports = {
 
@@ -30,6 +31,10 @@ module.exports = {
     baseUrl : 'http://localhost:3000/',
     appToken : 'roman',
     watchDir : null
+  },
+
+  formAPIUrl : function (baseUrl) {
+    return help.joinUrl(baseUrl, 'api');
   },
 
   baseUrl : 'http://lukkari.dc.turkuamk.fi/'
