@@ -11,7 +11,7 @@ var ipc = require('ipc');
 var Menu = require('menu');
 
 // App libs
-var store = require('./libs/store');
+var store = require('./lib/store');
 var sync = require('./lib/sync')(app);
 var menu = require('./lib/menu');
 

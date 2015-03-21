@@ -19,7 +19,7 @@ var config = module.exports = {
   // App load file
   baseFile : 'file://' + __dirname + '/index.html',
 
-  trayIcon : __dirname + '/libs/images/tray.png',
+  trayIcon : __dirname + '/lib/images/tray.png',
 
   crashReporter : {},
   /*

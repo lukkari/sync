@@ -1,8 +1,8 @@
 /**
  * Test migrate lib
  */
-var store = require('../libs/store');
-var migrate = require('../libs/migrate')(store);
+var store = require('../lib/store');
+var migrate = require('../lib/migrate')(store);
 
 var assert = require('assert');
 var fs = require('fs');
