@@ -3,14 +3,17 @@
  */
 var help = require('./lib/help');
 
-module.exports = {
+var config = module.exports = {
+
+  appTitle : 'Lukkari Sync',
 
   // BrowserWindow options
   browserWindow : {
     width : (process.env.DEBUG == 'true') ? 1000 : 500, // Provide space for debugger tools
     height : (process.env.DEBUG == 'true') ? 700 : 320,
-    title : 'Lukkari sync',
-    center : true
+    title : 'Lukkari Sync',
+    center : true,
+    icon : __dirname + '/lib/images/app-icon.png',
   },
 
   // App load file
