@@ -8,10 +8,12 @@ var config = require('./config');
 var app = require('app');
 var BrowserWindow = require('browser-window');
 var ipc = require('ipc');
+var Menu = require('menu');
 
 // App libs
 var store = require('./libs/store');
 var sync = require('./lib/sync')(app);
+var menu = require('./lib/menu');
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
@@ -33,6 +35,8 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
   // Init storage
   store.init(app.getDataPath(), config.stateObj);
+
+  Menu.setApplicationMenu(menu);
 
   openWindow();
 
