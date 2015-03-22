@@ -32,7 +32,7 @@ describe('help lib', function () {
   });
 
   it('should join strings to valid url', function () {
-    var href = "http://localhost.name/api/root/long/";
+    var href = "http://localhost.name/api/root/long";
 
     assert.equal(help.joinUrl('http://localhost.name', 'api/', '/root', 'long'), href);
   });
