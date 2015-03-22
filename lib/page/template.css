@@ -261,3 +261,8 @@ li { list-style-type: none; }
 .settings-list .fixed {
   width: 200px;
 }
+
+.settings-list .wrong {
+	border-color: #F54C4C;
+	background-color: #FAD9D9;
+}
