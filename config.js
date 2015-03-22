@@ -32,8 +32,7 @@ var config = module.exports = {
 
   stateObj : {
     baseUrl : 'http://localhost:3000/',
-    appToken : 'roman',
-    watchDir : null
+    appToken : ''
   },
 
   formAPIUrl : function (baseUrl) {
