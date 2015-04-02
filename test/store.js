@@ -1,7 +1,7 @@
 /**
  * Test store lib
  */
-var store = require('../lib/store');
+var store = require('../src/lib/store');
 var fs = require('fs');
 var path = require('path');
 

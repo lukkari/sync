@@ -1,31 +1,62 @@
 {
-  "name": "Lukkari-sync",
+  "name": "LukkariSync",
+  "productName": "LukkariSync",
   "version": "0.0.1",
-  "description": "Desktop application that syncs folder with web-version",
-  "main": "index.js",
-  "scripts": {
-    "debug": "DEBUG=true atom-shell ./",
-    "prod": "atom-shell ./",
-    "test": "mocha",
-    "atom-shell": "atom-shell"
-  },
+  "description": "A Sample Atom Shell App",
+  "main": "./src/index.js",
+  "author": "The Atom Shell Community",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zaynetro/lukkari-sync.git"
+    "url": "https://github.com/atom/atom-shell-starter.git"
   },
   "bugs": {
-    "url": "https://github.com/zaynetro/lukkari-sync/issues"
+    "url": "https://github.com/atom/atom-shell-starter/issues"
   },
-  "devDependencies": {
-    "atom-shell": "^0.22.1",
-    "grunt": "^0.4.5",
-    "grunt-build-atom-shell": "^1.1.5",
-    "mocha": "^2.0.1"
-  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/atom/atom-shell-starter/raw/master/LICENSE.md"
+    }
+  ],
   "dependencies": {
+    "babel-core": "^4.0.2",
+    "async": "0.2.6",
+    "coffee-script": "1.7.0",
+    "coffeestack": "0.7.0",
+    "emissary": "^1.3.1",
+    "fs-plus": "^2.3.1",
+    "fstream": "0.1.24",
+    "guid": "0.0.10",
+    "jasmine": "2.2.0",
+    "less-cache": "0.17.0",
+    "mixto": "^1",
+    "mkdirp": "0.3.5",
+    "nslog": "^2.0.0",
+    "property-accessors": "^1",
+    "q": "^1.0.1",
+    "runas": "^2.0.0",
+    "season": "^1.0.2",
+    "semver": "2.2.1",
+    "serializable": "^1",
+    "temp": "0.7.0",
+    "underscore-plus": "^1.6.1",
+    "vm-compatibility-layer": "0.1.0",
+    "yargs": "^1.3.3",
     "csv-parse": "~0.0.6",
     "iconv-lite": "^0.4.5",
     "request": "^2.51.0",
     "socket.io-client": "~1.2.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.0.1"
+  },
+  "private": true,
+  "scripts": {
+    "preinstall": "node -e 'process.exit(0)'",
+    "test": "node script/test",
+    "bootstrap": "node script/bootstrap",
+    "build": "node script/build",
+    "run": "node script/run",
+    "clean": "node script/clean"
   }
 }

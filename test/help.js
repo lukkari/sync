@@ -2,7 +2,7 @@
 * Test help lib
 */
 
-var help = require('../lib/help');
+var help = require('../src/lib/help');
 var assert = require('assert');
 
 describe('help lib', function () {
