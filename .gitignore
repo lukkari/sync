@@ -1,10 +1,13 @@
-# Ignore logs
-*.log
-
-# Ignore node_modules
+*.swp
+*~
+.DS_Store
+Thumbs.db
+.project
+.svn
+.nvm-version
 node_modules
-
-# Temporary files
-*.tmp
-
-atom-shell/
+npm-debug.log
+debug.log
+/tags
+/atom-shell/
+/static/components/
