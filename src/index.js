@@ -13,7 +13,7 @@ var Menu = require('menu');
 // App libs
 var store = require('./lib/store');
 var sync = require('./lib/sync')(app);
-var menu = require('./lib/menu');
+var menu = require('./menus/');
 
 // Report crashes to the server.
 require('crash-reporter').start(config.crashReporter);
