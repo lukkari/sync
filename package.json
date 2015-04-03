@@ -48,6 +48,7 @@
     "socket.io-client": "~1.2.1"
   },
   "devDependencies": {
+    "atom-shell": "^0.22.3",
     "mocha": "^2.0.1"
   },
   "private": true,
@@ -57,6 +58,7 @@
     "bootstrap": "node script/bootstrap",
     "build": "node script/build",
     "run": "node script/run",
-    "clean": "node script/clean"
+    "clean": "node script/clean",
+    "debug": "atom-shell ./"
   }
 }
